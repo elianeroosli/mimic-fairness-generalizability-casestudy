@@ -48,7 +48,7 @@ Note that there is a flag that allows to specify whether additional demographic
 variables should be included in the ICU stay information.
 
        cd mimic3-benchmarks/
-       python -m mimic3benchmark.scripts.extract_subjects path_mimic data --add_demographics {true/false}
+       python -m mimic3benchmark.scripts.extract_subjects path_mimic data --add_demographics {True/False}
 
 **4. Clean events data** 
 
@@ -71,7 +71,7 @@ stored in ```{SUBJECT_ID}/episode{#}.csv```. Following the choice in step 3, the
 can be augmented by demographic information (gender, ethnicity and insurance type) 
 if setting the --add_demographics flag to true again.
 
-       python -m mimic3benchmark.scripts.extract_episodes_from_subjects data --add_demographics {true/false}
+       python -m mimic3benchmark.scripts.extract_episodes_from_subjects data --add_demographics {True/False}
 
 **6. Split into training and testing sets**
 
