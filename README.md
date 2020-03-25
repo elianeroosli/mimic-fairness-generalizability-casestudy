@@ -44,8 +44,11 @@ The first command places you in the directory. It then takes MIMIC-III csv files
 * diagnoses to `data/{SUBJECT_ID}/diagnoses.csv`
 * events to `data/{SUBJECT_ID}/events.csv`
 
+Note that there is a flag that allows to specify whether additional demographic
+variables should be included in the ICU stay information.
+
        cd mimic3-benchmarks/
-       python -m mimic3benchmark.scripts.extract_subjects path_mimic data
+       python -m mimic3benchmark.scripts.extract_subjects path_mimic data --add_demographics {true/false}
 
 **4. Clean events data** 
 
@@ -64,10 +67,11 @@ in the total exclusion of roughly 20% of all events.
 A timeseries of events pertaining to the 17 selected physiological variables
 is stored in ```{SUBJECT_ID}/episode{#}_timeseries.csv``` while episode-level information 
 (patient age, gender, ethnicity, height, weight) and outcomes (mortality, length of stay, diagnoses) are 
-stored in ```{SUBJECT_ID}/episode{#}.csv```. The timeseries can be augmented by demographic information
-(gender, ethnicity and insurance type) if setting the --augmented flag to true.
+stored in ```{SUBJECT_ID}/episode{#}.csv```. Following the choice in step 3, the timeseries 
+can be augmented by demographic information (gender, ethnicity and insurance type) 
+if setting the --add_demographics flag to true again.
 
-       python -m mimic3benchmark.scripts.extract_episodes_from_subjects_augmented data --augmented [true/false]
+       python -m mimic3benchmark.scripts.extract_episodes_from_subjects data --add_demographics {true/false}
 
 **6. Split into training and testing sets**
 
