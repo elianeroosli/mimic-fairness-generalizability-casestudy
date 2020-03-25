@@ -90,7 +90,7 @@ and validation sets as following:
         python -m mimic3models.split_train_val data/{task}
     
     
-**Overview:**
+### Resulting database
 
 After following all steps, there will be a directory `data/{task}` for each created benchmark task.
 These directories have two sub-directories: `train` and `test`.
