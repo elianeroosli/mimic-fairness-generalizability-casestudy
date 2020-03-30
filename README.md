@@ -104,3 +104,7 @@ the ICUSTAY_ID, the events window (first `period_length` hours of the stay) and 
 The `period_length` for the in-hospital mortality prediction task is always 48 hours, so it is not listed in the corresponding listfiles.
 
 
+## Benchmark model testing
+
+Harytyunyan's paper develops seven different models for four clinical prediction tasks for ICU patients: 
+in-hospital mortality, decompensation, length-of-stay and phenotyping. 
