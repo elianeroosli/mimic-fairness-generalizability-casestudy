@@ -16,6 +16,11 @@ def process_partition(args, partition, eps=1e-6, n_hours=48):
     output_dir = os.path.join(args.output_path, partition)
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
+        
+    # prepare demographics directory
+    demographics_dir = os.path.join(args.output_path, 'demographics')
+    if not os.path.exists(demographics_dir):
+        os.mkdir(demographics_dir)
 
     xy_pairs = []
     patients = list(filter(str.isdigit, os.listdir(os.path.join(args.root_path, partition))))
@@ -35,7 +40,9 @@ def process_partition(args, partition, eps=1e-6, n_hours=48):
         # get patient timeseries event data from folder
         patient_folder = os.path.join(args.root_path, partition, patient)
         patient_ts_files = list(filter(lambda x: x.find("timeseries") != -1, os.listdir(patient_folder)))
-
+        if patient_ts_files == []:
+            print('EMPTY PATIENT')
+            
         new_patient = True
         # for each episode during an admission
         for ts_filename in patient_ts_files:
@@ -64,11 +71,6 @@ def process_partition(args, partition, eps=1e-6, n_hours=48):
                 header = ts_lines[0]
                 ts_lines = ts_lines[1:]
                 event_times = [float(line.split(',')[0]) for line in ts_lines]
-                
-                # add demographical data
-                newheader = str(header)+",Ethnicity"
-                race = label_df.iloc[0]['Ethnicity']
-                #print(ts_lines)
                 ts_lines = [line for (line, t) in zip(ts_lines, event_times)
                             if -eps < t < n_hours + eps]
 
@@ -91,7 +93,11 @@ def process_partition(args, partition, eps=1e-6, n_hours=48):
                     race_map[race] += 1
                     # stop recording for additional stays
                     new_patient = False
-                    
+                
+                # store demographics of the stay
+                demographics_filename = patient + "_" + lb_filename
+                label_df.to_csv(os.path.join(args.output_path, 'demographics', demographics_filename))
+                
                 # create events storage file
                 output_ts_filename = patient + "_" + ts_filename
                 with open(os.path.join(output_dir, output_ts_filename), "w") as outfile:

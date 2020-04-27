@@ -51,28 +51,7 @@ def add_hours_elapsed_to_events(events, dt, remove_charttime=True):
     return events
 
 
-def add_ethnicity_to_events(events, episodic_data, variables):
-    # create new events entry for ethnicity: important is VALUE and VARIABLE
-    demographics = {'SUBJECT_ID': events.SUBJECT_ID.iloc[0], 'HADM_ID': events.HADM_ID.iloc[0], 'ICUSTAY_ID': events.ICUSTAY_ID.iloc[0],
-                    'CHARTTIME': events.CHARTTIME.iloc[0], 'ITEMID': np.nan, 'VALUE': episodic_data['Ethnicity'].iloc[0], 'VALUEUOM': np.nan, 
-                    'VARIABLE': 'Ethnicity', 'MIMIC_LABEL': np.nan}
-    variables.append('Ethnicity')
-    return events.append(demographics, ignore_index=True), variables
-
-
-def add_gender_to_events(events, episodic_data, variables):
-    # create new events entry for gender: important is VALUE and VARIABLE
-    demographics = {'SUBJECT_ID': events.SUBJECT_ID.iloc[0], 'HADM_ID': events.HADM_ID.iloc[0], 'ICUSTAY_ID': events.ICUSTAY_ID.iloc[0],
-                    'CHARTTIME': events.CHARTTIME.iloc[0], 'ITEMID': np.nan, 'VALUE': episodic_data['Gender'].iloc[0], 'VALUEUOM': np.nan, 
-                    'VARIABLE': 'Gender', 'MIMIC_LABEL': np.nan}
-    variables.append('Gender')
-    return events.append(demographics, ignore_index=True), variables
-
-
-def convert_events_to_timeseries(events, episodic_data, variable_column='VARIABLE', variables=[]):
-    # add demographic variables to events
-    #events, variables = add_gender_to_events(events, episodic_data, variables)
-    #events, variables = add_ethnicity_to_events(events, episodic_data, variables)
+def convert_events_to_timeseries(events, variable_column='VARIABLE', variables=[]):
     
     # get metadata of events: charttime and icustay  
     metadata = events[['CHARTTIME', 'ICUSTAY_ID']].sort_values(by=['CHARTTIME', 'ICUSTAY_ID'])\
@@ -89,9 +68,7 @@ def convert_events_to_timeseries(events, episodic_data, variable_column='VARIABL
     # add info about icustay_id
     timeseries = timeseries.merge(metadata, left_index=True, right_index=True)\
                     .sort_index(axis=0).reset_index()
-    
-    #print(timeseries)
-    
+       
     # if a variable is completely missing in the timeseries, add a column with nans
     for v in variables:
         if v not in timeseries:

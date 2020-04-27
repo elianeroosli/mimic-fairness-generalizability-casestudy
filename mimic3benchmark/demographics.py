@@ -158,6 +158,28 @@ def transform_insurance(insurance_series):
 
 #---------------------------------------------------- demographics ------------------------------------------------------------
 
+def detailed_ethnicity(stays):
+    # some redefinition
+    stays.loc[stays["ETHNICITY"] == "UNABLE TO OBTAIN", "ETHNICITY"] = "UNKNOWN/NOT SPECIFIED"
+    stays.loc[stays["ETHNICITY"] == "PATIENT DECLINED TO ANSWER", "ETHNICITY"] = "UNKNOWN/NOT SPECIFIED"
+    stays.loc[stays["ETHNICITY"] == "AMERICAN INDIAN/ALASKA NATIVE FEDERALLY RECOGNIZED TRIBE", "ETHNICITY"] = "AMERICAN INDIAN/ALASKA NATIVE"
+    groups = np.arange(0,5)
+    labels = ["UNKNOWN/OTHER", "ASIAN", "BLACK", "HISPANIC", "WHITE"]
+    total = stays.shape[0]
+    print(total)
+    for g in groups:
+        grouptotal = stays[stays["ETHNICITY_"] == g].shape[0]
+        print("{} {} ({:4.2f}) ".format(labels[g], grouptotal, grouptotal/total*100,2))
+        
+        cols = stays[stays["ETHNICITY_"] == g]["ETHNICITY"].unique()
+        for c in cols:
+            small_total = stays[stays['ETHNICITY'] == c].shape[0]
+            print("{} {} ({:4.2f})".format(c, small_total, small_total/grouptotal*100,2))
+        print("-----------------------------")
+
+
+
+
 def nbr_stays(df, lower, upper):
     return df[(df['AGE']>=lower) & (df['AGE']<upper)].shape[0]
 
@@ -207,27 +229,112 @@ def rootcohort_demographics(root_path):
     nb_patients = len(patients)
     df_patients = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
     df_stays = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
-
+    print(nb_patients)
     for (patient_index, patient) in enumerate(patients):
         sys.stdout.write('\rSUBJECT {0} of {1}...'.format(patient_index+1, nb_patients))
         
         # get patient timeseries event data from folder
         patient_folder = os.path.join(root_path, patient)
         patient_ts_files = list(filter(lambda x: x.find("timeseries") != -1, os.listdir(patient_folder)))
-
+        if patient_ts_files == []:
+            print('EMPTY:', patient_folder)
         new_patient = True
         # for each episode during an admission
-        for ts_filename in patient_ts_files:
+        for (episode_index, ts_filename) in enumerate(patient_ts_files):
             with open(os.path.join(patient_folder, ts_filename)) as tsfile:
                 # get diagnosis data from the non timeseries csv file
                 lb_filename = ts_filename.replace("_timeseries", "")
                 data = pd.read_csv(os.path.join(patient_folder, lb_filename))
                 
-                df_stays = df_stays.append({'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
+                # index is to make sure that each row is unique (otherwise not added by append function)
+                stay_index = (patient_index+1)*100+(episode_index+1)
+                df_stays = df_stays.append({'INDEX': stay_index, 'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
                                         'AGE': data['Age'].iloc[0], 'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
                 if new_patient:
-                    df_patients = df_patients.append({'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
+                    df_patients = df_patients.append({'INDEX':patient_index+1, 'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
                                         'AGE': data['Age'].iloc[0], 'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
                     new_patient = False
+                
+    return df_patients, df_stays
+
+
+def rootcohort_sep_demographics(root_path):
+    partitions = ['test', 'train']
+    df_patients = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
+    df_stays = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
+    for p in partitions:
+        patients = list(filter(str.isdigit, os.listdir(os.path.join(root_path,p))))
+        nb_patients = len(patients)
+        print('\nnumber subjects in', p, 'partition:', nb_patients)
+        for (patient_index, patient) in enumerate(patients):
+            sys.stdout.write('\rSUBJECT {0} of {1}...'.format(patient_index+1, nb_patients))
+            # get patient timeseries event data from folder
+            patient_folder = os.path.join(root_path,p, patient)
+            patient_ts_files = list(filter(lambda x: x.find("timeseries") != -1, os.listdir(patient_folder)))
+
+            new_patient = True
+            # for each episode during an admission
+            for (episode_index, ts_filename) in enumerate(patient_ts_files):
+                with open(os.path.join(patient_folder, ts_filename)) as tsfile:
+                    # get diagnosis data from the non timeseries csv file
+                    lb_filename = ts_filename.replace("_timeseries", "")
+                    data = pd.read_csv(os.path.join(patient_folder, lb_filename))
+
+                    df_stays = df_stays.append({'INDEX':patient+"_"+str(episode_index), 'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
+                                            'AGE': data['Age'].iloc[0], 'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
+                    if new_patient:
+                        df_patients = df_patients.append({'INDEX':patient+"_"+str(episode_index), 'ETHNICITY': data['Ethnicity'].iloc[0], 
+                                                          'GENDER': data['Gender'].iloc[0], 'AGE': data['Age'].iloc[0], 
+                                                          'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
+                        new_patient = False
+                
+    return df_patients, df_stays
+
+
+
+def taskcohort_sep_demographics(task_path_dem):
+    partitions = ['test', 'train']
+    df_patients = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
+    df_stays = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
+    for p in partitions:
+        print('\nin partition:', p)
+        episodes = os.listdir(os.path.join(task_path_dem,p))
+        nb_episodes = len(episodes)        
+        seen_patients = []
+        print(nb_episodes)
+        for (episode_index, episode) in enumerate(episodes):
+            sys.stdout.write('\rEPISODE {0} of {1}...'.format(episode_index+1, nb_episodes))
+            data = pd.read_csv(os.path.join(task_path_dem,p,episode))
+            patient_id = episode.split('_')[0]
+            if patient_id not in seen_patients:
+                seen_patients.append(patient_id)
+                df_patients = df_patients.append({'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
+                                                'AGE': data['Age'].iloc[0], 'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
+
+            df_stays = df_stays.append({'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
+                                                'AGE': data['Age'].iloc[0], 'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
+
+    return df_patients, df_stays
+
+
+
+def taskcohort_demographics(task_path_dem):
+    df_patients = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
+    df_stays = pd.DataFrame(columns = ['ETHNICITY', 'GENDER', 'AGE', 'INSURANCE'])
+    episodes = os.listdir(task_path_dem)
+    nb_episodes = len(episodes)        
+    seen_patients = []
+    print(nb_episodes)
+    for (episode_index, episode) in enumerate(episodes):
+        sys.stdout.write('\rEPISODE {0} of {1}...'.format(episode_index+1, nb_episodes))
+        data = pd.read_csv(os.path.join(task_path_dem,episode))
+        patient_id = episode.split('_')[0]
+        if patient_id not in seen_patients:
+            seen_patients.append(patient_id)
+            df_patients = df_patients.append({'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
+                                            'AGE': data['Age'].iloc[0], 'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
+        
+        df_stays = df_stays.append({'ETHNICITY': data['Ethnicity'].iloc[0], 'GENDER': data['Gender'].iloc[0], 
+                                            'AGE': data['Age'].iloc[0], 'INSURANCE': data['Insurance'].iloc[0]}, ignore_index=True)
                 
     return df_patients, df_stays

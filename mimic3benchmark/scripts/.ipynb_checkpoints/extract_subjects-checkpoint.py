@@ -20,7 +20,7 @@ parser.add_argument('--phenotype_definitions', '-p', type=str,
                     default=os.path.join(os.path.dirname(__file__), '../resources/hcup_ccs_2015_definitions.yaml'),
                     help='YAML file with phenotype definitions.')
 parser.add_argument('--itemids_file', '-i', type=str, help='CSV containing list of ITEMIDs to keep.')
-parser.add_argument('--augmented', action='store_true', help='AUGMENTED: using additional demographic variables')
+parser.add_argument('--add_demographics', action='store_true', help='AUGMENTED: using additional demographic variables')
 parser.add_argument('--verbose', '-v', type=int, help='Level of verbosity in output.', default=1)
 parser.add_argument('--test', action='store_true', help='TEST MODE: process only 1000 subjects, 1000000 events.')
 args, _ = parser.parse_known_args()
@@ -35,7 +35,7 @@ except:
 patients = read_patients_table(args.mimic3_path)
 stays = read_icustays_table(args.mimic3_path)
 
-if args.augmented:
+if args.add_demographics:
     print('AUGMENTED DATASET: USING MORE DEMOGRAPHIC VARIABLES')
     admits = read_admissions_table_augmented(args.mimic3_path)
 else: 
@@ -62,7 +62,7 @@ if args.verbose:
     print('3. {0:40} (1) ICUSTAY_ID: {1}  (2) HADM_ID: {2}  (3) SUBJECT_ID: {3}'
           .format('AFTER REMOVING MULTIPLE STAYS PER ADMIT:', stays.ICUSTAY_ID.unique().shape[0], stays.HADM_ID.unique().shape[0], stays.SUBJECT_ID.unique().shape[0]))
 
-### 4. add additional features and remove neonates
+### 4. add additional features, remove neonates and patients younger than 18
 
 stays = add_age_to_icustays(stays)
 stays = add_inunit_mortality_to_icustays(stays)
@@ -117,7 +117,7 @@ break_up_stays_by_subject(stays, args.output_path, subjects=subjects, verbose=ar
 # assign diagnoses to subjects
 break_up_diagnoses_by_subject(phenotypes, args.output_path, subjects=subjects, verbose=args.verbose)
               
-# assign events to subjeCts
+# assign events to subjects
 if args.itemids_file:
     items_to_keep = set([int(itemid) for itemid in dataframe_from_csv(args.itemids_file)['ITEMID'].unique()])
 else: 
