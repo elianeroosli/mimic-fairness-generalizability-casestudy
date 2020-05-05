@@ -1,4 +1,4 @@
-# Benchmark model training
+# Benchmark models
 
 Harutyunyan's paper looks at four clinical prediction tasks for ICU patients: 
 in-hospital mortality, decompensation, length-of-stay and phenotyping. 
@@ -16,4 +16,3 @@ on the modeling of in-hospital mortality. The best-performing
 model for this task was reported to be the `simple channel-wise LSTM`. Hence, we focus
 on analysing this specific model on bias, demographic fairness and generalizability.
 
-# Benchmark model testing
