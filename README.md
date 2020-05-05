@@ -6,19 +6,23 @@ This repository will contain all code related to:
     - Baseline MIMIC III cohort
     - Augmented MIMIC III cohort (additional demographical data)
     - Corresponding STARR cohort
-- Training models to predict:
-    - In-hospital mortality (IHM)
-    - Decompensation (DEC)
-- Analysis tools for fairness and generalizability
+- Training and testing procedures to predict: in-hospital mortality (IHM)
+- Analysis tools for:
+    - performance evaluation
+    - fairness: anti-classification, classification parity, and calibration
+    - possibly additional tools for generalizability and representativity
 
 
 ## Benchmark building pipeline
 
-This data preparation pipeline is adapted from Harytyunyan et al.'s article on 
+This data preparation pipeline is adapted from Harutyunyan et al.'s article on 
 [Multitask learning and benchmarking with clinical time series data](https://www.nature.com/articles/s41597-019-0103-9), 
 with the code available [here](https://github.com/YerevaNN/mimic3-benchmarks).
 
-### Step-by-step instruction
+
+### MIMIC-III (v1.4) cohort
+---
+#### Step-by-step instruction
 
 **1. Get data**
 
@@ -94,7 +98,7 @@ and validation sets as following:
         python -m mimic3models.split_train_val data/{task}
     
     
-### Resulting database
+#### Resulting database
 
 After following all steps, there will be a directory `data/{task}` for each created benchmark task.
 These directories have two sub-directories: `train` and `test`.
@@ -104,9 +108,16 @@ the ICUSTAY_ID, the events window (first `period_length` hours of the stay) and 
 The `period_length` for the in-hospital mortality prediction task is always 48 hours, so it is not listed in the corresponding listfiles.
 
 
-## Benchmark model testing
+### STARR_DE cohort
+------
 
-Harytyunyan's paper looks at four clinical prediction tasks for ICU patients: 
+#### Step-by-step instruction
+
+#### Resulting database
+
+## Benchmark model training
+
+Harutyunyan's paper looks at four clinical prediction tasks for ICU patients: 
 in-hospital mortality, decompensation, length-of-stay and phenotyping. 
 Five different baseline models for each of the four main tasks have been provided:
 
@@ -118,7 +129,7 @@ Five different baseline models for each of the four main tasks have been provide
 
 In addition, they have also developped multitasking models that aim to learn all four
 prediction tasks simultaneously. For the frame of this project however, we focus
-on the modeling of in-hospital mortality (*and possibly decompensation*). The best-performing
+on the modeling of in-hospital mortality. The best-performing
 model for this task was reported to be the `simple channel-wise LSTM`. Hence, we focus
 on analysing this specific model on bias, demographic fairness and generalizability.
 
@@ -173,7 +184,9 @@ The output file corresponding to the submitted job can be found in the `slurm_jo
 and is uniquely identified by its job ID.
 
 
-### Best models and testing
+## Benchmark model testing
+
+
 
 talk about which epoch is best to use for testing etc.
 
