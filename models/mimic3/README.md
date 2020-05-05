@@ -66,15 +66,15 @@ The epoch associated with the highest `val_auroc` should be chosen as the final 
 
 In a Jupyter notebook, the following script is then run:
 
-        %run mimic3models/in_hospital_mortality/main.py
+        %run models/mimic3/in_hospital_mortality/main.py
 
 It takes a number of parameters to specify the testing procedure:
 
-        --network mimic3models/keras_models/channel_wise_lstms.py
+        --network models/mimic3/keras_models/channel_wise_lstms.py
         --mask_demographics "Ethnicity" "Gender" "Insurance" 
         --data data/aug/mortality 
         --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --size_coef 4.0
-        --load_state mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch32.test0.28141715225643954.state 
+        --load_state models/mimic3/in_hospital_mortality/keras_states/{date}/k_clstms.{demographics}.epoch{epoch}.state 
         --mode test 
         
 **3. Analyse results**
