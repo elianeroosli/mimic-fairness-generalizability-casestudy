@@ -8,7 +8,7 @@ This repository contains three main directories:
 - `models`: Training and testing protocols
     - mimic3
     - starr
-- `analysis`: tools for performance, fairness and possibly generalizability/representativity analysis
+- `analysis`: Tools for performance, fairness and possibly generalizability/representativity analysis
 
 
 
