@@ -1,4 +1,4 @@
-### General step-by-step instructions
+## Benchmark model training: General step-by-step instructions
 
 The code for the LSTM-based models can be found in the mimic3models/keras_models directory.
 The `main.py` files to train the models are situated in their respective mimic3models/{task} directories.
