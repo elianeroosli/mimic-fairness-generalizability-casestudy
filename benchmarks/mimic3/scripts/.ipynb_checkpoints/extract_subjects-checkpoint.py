@@ -20,7 +20,7 @@ parser.add_argument('--phenotype_definitions', '-p', type=str,
                     default=os.path.join(os.path.dirname(__file__), '../resources/hcup_ccs_2015_definitions.yaml'),
                     help='YAML file with phenotype definitions.')
 parser.add_argument('--itemids_file', '-i', type=str, help='CSV containing list of ITEMIDs to keep.')
-parser.add_argument('--add_demographics', action='store_true', help='AUGMENTED: using additional demographic variables')
+parser.add_argument('--add_demographics', action='store_true', default=False, help='AUGMENTED: using additional demographic variables')
 parser.add_argument('--verbose', '-v', type=int, help='Level of verbosity in output.', default=1)
 parser.add_argument('--test', action='store_true', help='TEST MODE: process only 1000 subjects, 1000000 events.')
 args, _ = parser.parse_known_args()

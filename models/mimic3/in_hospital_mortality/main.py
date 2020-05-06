@@ -7,13 +7,13 @@ import os
 import imp
 import re
 import sys
-from sklearn.utils import resample
 
-from mimic3models.in_hospital_mortality import utils
 from mimic3benchmark.readers import InHospitalMortalityReader
-from mimic3models.preprocessing import Discretizer, Normalizer
 from mimic3benchmark.preprocessing import find_map_key
-from mimic3models import metrics, keras_utils, common_utils 
+from mimic3models.preprocessing import Discretizer, Normalizer
+from mimic3models.in_hospital_mortality import utils
+from mimic3models.evaluation import metrics
+from mimic3models import keras_utils, common_utils
 from keras.callbacks import ModelCheckpoint, CSVLogger
 
 #-------------------------------------- parser ----------------------------------------
@@ -25,7 +25,6 @@ parser.add_argument('--mask_demographics', nargs='*', help='demographic variable
 # Use like: python arg.py --mask_d 1234 2345 3456 4567
 parser.add_argument('--data', type=str, help='Path to the data of in-hospital mortality task',
                     default=os.path.join(os.path.dirname(__file__), '../../data/mortality/'))
-parser.add_argument('--bootstrapping',  default=False, action='store_true', help='whether to do bootstrapping')
 parser.add_argument('--output_dir', type=str, help='Directory relative which all output files are stored',
                     default='mimic3models/in_hospital_mortality')
 args = parser.parse_args()
@@ -55,7 +54,7 @@ discretizer = Discretizer(mask_demographics = args.mask_demographics,
 
 discretizer_header = discretizer.transform(train_reader.read_example(0)[0]["X"])[1].split(',')
 cont_channels = [i for (i, x) in enumerate(discretizer_header) if x.find("->") == -1]
-normalizer = Normalizer(fields=cont_channels)  # choose here which columns to standardize
+normalizer = Normalizer(fields=cont_channels)  
 normalizer_state = args.normalizer_state
 if normalizer_state is None:
     normalizer_state = 'ihm_ts{}.input_str_{}.start_time_zero.normalizer'.format(args.timestep, args.imputation)
@@ -85,9 +84,6 @@ optimizer_config = {'class_name': args.optimizer,
                     'config': {'lr': args.lr,
                                'beta_1': args.beta_1}}
 
-# NOTE: one can use binary_crossentropy even for (B, T, C) shape.
-#       It will calculate binary_crossentropies for each class
-#       and then take the mean over axis=-1. Tre results is (B, T).
 if target_repl:
     loss = ['binary_crossentropy'] * 2
     loss_weights = [1 - args.target_repl_coef, args.target_repl_coef]
@@ -102,6 +98,7 @@ model.compile(optimizer=optimizer_config,
 model.summary()
 
 #------------------------------------ Load model weights ------------------------------------------------
+
 n_trained_chunks = 0
 if args.load_state != "":
     print(args.load_state)
@@ -138,7 +135,7 @@ if args.mode == 'train':
         val_raw = extend_labels(val_raw)
 
     ### Prepare metrics and storage of results
-    path = os.path.join(args.output_dir, 'keras_states', date, model.final_name + '.epoch{epoch}.state')
+    path = os.path.join(args.output_dir, 'keras_states', date, model.say_name() + '.epoch{epoch}.state')
     
     # 1) define metrics to be assessed at every epoch for train and test
     metrics_callback = keras_utils.InHospitalMortalityMetrics(train_data=train_raw,
@@ -172,76 +169,7 @@ if args.mode == 'train':
               shuffle=True,
               verbose=args.verbose,
               batch_size=args.batch_size)
-    # validation_data: data on which to evaluate the loss and any model metrics at the end of each epoch
-    # callbacks:
-    # - metrics_callback: print the epoch results for train and validation set
-    # - csv_logger: streams epoch results to a csv file
-    # - saver: comes from modelcheckpoint
-    
 
-#------------------------------- for RE-TRAINING the model -------------------------------------------------------------
-
-if args.mode == 'retrain':
-    
-    # Read training data
-    train_raw_package = utils.load_data(train_reader, discretizer, normalizer, args.small_part)
-    val_raw_package = utils.load_data(val_reader, discretizer, normalizer, args.small_part)
-    
-    train_raw = train_raw_package["data"]
-    train_dem = train_raw_package["dem"]
-    val_raw = val_raw_package["data"]
-    val_dem = val_raw_package["dem"]
-    
-    if target_repl:
-        T = train_raw[0][0].shape[0]
-
-        def extend_labels(data):
-            data = list(data)
-            labels = np.array(data[1])  # (B,)
-            data[1] = [labels, None]
-            data[1][1] = np.expand_dims(labels, axis=-1).repeat(T, axis=1)  # (B, T)
-            data[1][1] = np.expand_dims(data[1][1], axis=-1)  # (B, T, 1)
-            return data
-
-        train_raw = extend_labels(train_raw)
-        val_raw = extend_labels(val_raw)
-
-    ### Prepare metrics and storage of results
-    path = os.path.join(args.output_dir, 'keras_states', date, model.final_name + '.epoch{epoch}.state')
-    
-    # 1) define metrics to be assessed at every epoch for train and test
-    metrics_callback = keras_utils.InHospitalMortalityMetrics(train_data=train_raw,
-                                                              val_data=val_raw,
-                                                              train_dem=train_dem,
-                                                              val_dem=val_dem,
-                                                              target_repl=(args.target_repl_coef > 0),
-                                                              batch_size=args.batch_size,
-                                                              verbose=args.verbose)
-    # 2) make sure save directory exists
-    dirname = os.path.dirname(path)
-    if not os.path.exists(dirname):
-        os.makedirs(dirname)
-    saver = ModelCheckpoint(path, verbose=1, period=args.save_every)
-
-    # 3) logs of results
-    keras_logs = os.path.join(args.output_dir, 'keras_logs')
-    if not os.path.exists(keras_logs):
-        os.makedirs(keras_logs)
-    csv_logger = CSVLogger(os.path.join(keras_logs, model.final_name + '.csv'),
-                           append=True, separator=';')
-
-    # fit the model: trains the model for a fixed number of epochs
-    print("==> training")
-    model.fit(x=train_raw[0],
-              y=train_raw[1],
-              validation_data=val_raw,
-              epochs=n_trained_chunks + args.epochs,
-              initial_epoch=n_trained_chunks,
-              callbacks=[metrics_callback, saver, csv_logger],
-              shuffle=True,
-              verbose=args.verbose,
-              batch_size=args.batch_size)
-    # validation_data: data on which to evaluate the loss and any model metrics at the end of each epoch
     # callbacks:
     # - metrics_callback: print the epoch results for train and validation set
     # - csv_logger: streams epoch results to a csv file
@@ -312,7 +240,7 @@ elif args.mode == 'test':
     utils.save_results(names, predictions, labels, dems, path_results)
     
     
-#-------------------------------------- for testing the model ---------------------------------------------
+#-------------------------------------- for testing the model on the training data ---------------------------------------------
 
 elif args.mode == 'test_train':
 
@@ -372,9 +300,7 @@ elif args.mode == 'test_train':
     
     # store results
     path_results = os.path.join(args.output_dir, "predictions", "results", filename) + ".csv"
-    utils.save_results(names, predictions, labels, dems, path_results)
-    
-    
+    utils.save_results(names, predictions, labels, dems, path_results)   
 
 else:
     raise ValueError("Wrong value for args.mode")
