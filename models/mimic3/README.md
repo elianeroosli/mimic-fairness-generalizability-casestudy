@@ -84,3 +84,23 @@ The script has produced several outputs ready for analysis in the `predictions` 
 - **curves**: .csv files to create ROC and PRC plots, per demographic group and overall
 - **metrics**: .csv file with all relevant performance metrics, per demographic group and overall
 - **results**: .csv file with the prediction, correct label and demographic data for all tested samples
+
+
+## Step-by-step instructions: Evaluation
+
+The evaluation script takes as input the test predictions stored in `results/filename.csv` and computes 
+confidence intervals of the relevant performance metrics by bootstrapping. The intervals
+are individually computed for all demographic groups and the whole test data. In a Jupyter
+notebook, write:
+
+        %run models/mimic3/evaluation/evaluate_ihm.py 
+
+A number of parameters to specify the evaluation procedure need to be added on the same line:
+
+        - listfile of test data: --test_listfile "data/aug/mortality/test/listfile.csv" 
+        - number bootstrapping iterations: --n_iters 10000 
+        - whether bootstrapping should be stratified by the outcome label: --stratify 
+        - test predictions: "models/mimic3/in_hospital_mortality/predictions/results/TEST.{date}.k_clstms.{demographics}.csv"
+
+A .json file stores all computed confidence intervals in the `predictions/confvals` directory,
+which can then be loaded to perform further analysis and visualizations on them.
