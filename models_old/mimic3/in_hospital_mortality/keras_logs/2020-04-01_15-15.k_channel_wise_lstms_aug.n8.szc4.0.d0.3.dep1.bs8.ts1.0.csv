@@ -1,2 +1,0 @@
-epoch;loss;train_acc;train_auprc;train_auroc;train_dem_val;train_dem_var;train_minpse;train_nb;train_prec0;train_prec1;train_rec0;train_rec1;val_acc;val_auprc;val_auroc;val_dem_val;val_dem_var;val_loss;val_minpse;val_nb;val_prec0;val_prec1;val_rec0;val_rec1
-0;0.357784693962863;0.87208;0.438888;0.804836;;;0.461771;14681;0.889233;0.56925;0.973294;0.225466;0.87275;0.438263;0.801494;;;0.32400469378349134;0.458239;3222;0.892079;0.567708;0.970208;0.25
