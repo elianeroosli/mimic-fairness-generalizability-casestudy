@@ -27,27 +27,27 @@ in the `sql` folder and loads them into Nero as `.tsv` files.
 The tables are build using the same exclusion criteria as detailed in the `mimic`
 processing flow. The tables contain the following information:
 
-    STAYS:
-    - Patient and stay ID
-    - Demographic information: age, gender, insurance, ethnicity
-    - Body anatomy: height, weight
-    - Dates: admission and discharge times in hospital and ICU
-    - Target outcome: in-hospital mortality
+*STAYS:*
+- Patient and stay ID
+- Demographic information: age, gender, insurance, ethnicity
+- Body anatomy: height, weight
+- Dates: admission and discharge times in hospital and ICU
+- Target outcome: in-hospital mortality
     
-    LABS:
-    - Fraction inspired oxygen
-    - Glucose
-    - Heart rate
-    - Oxygen saturation
-    - pH
+*LABS:*
+- Fraction inspired oxygen
+- Glucose
+- Heart rate
+- Oxygen saturation
+- pH
     
-    VITALS:
-    - Blood pressure: diastolic, systolic and mean arterial pressure
-    - Glasgow coma scale:
-    - Heart rate
-    - Oxygen saturation
-    - Respiratory rate
-    - Temperature
+*VITALS:*
+- Blood pressure: diastolic, systolic and mean arterial pressure
+- Glasgow coma scale
+- Heart rate
+- Oxygen saturation
+- Respiratory rate
+- Temperature
     
 The script is run in the following way from the terminal
 
