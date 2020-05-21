@@ -55,8 +55,8 @@ The script is run in the following way from the terminal
         python fetch_data.py -p "sql/params.json" [-b] [-l]
 
 Importantly, there are two options one can choose:
-    - `-b`: triggers the script to first build the tables from scratch again
-    - `-l`: suppresses the loading of the tables (in case one only wants to rebuild the tables)
+- `-b`: triggers the script to first build the tables from scratch again
+- `-l`: suppresses the loading of the tables (in case one only wants to rebuild the tables)
 
 **5. Create timeseries**
 
