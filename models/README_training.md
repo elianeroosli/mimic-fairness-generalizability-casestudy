@@ -1,7 +1,25 @@
+# Benchmark models
+
+Harutyunyan's paper looks at four clinical prediction tasks for ICU patients: 
+in-hospital mortality, decompensation, length-of-stay and phenotyping. 
+Five different baseline models for each of the four main tasks have been provided:
+
+- Linear/logistic regression
+- Standard LSTM
+- Standard LSTM + deep supervision
+- Channel-wise LSTM
+- Channel-wise LSTM + deep supervision
+
+In addition, they have also developped multitasking models that aim to learn all four
+prediction tasks simultaneously. For the frame of this project however, we focus
+on the modeling of in-hospital mortality. The best-performing
+model for this task was reported to be the `simple channel-wise LSTM`. Hence, we focus
+on analysing this specific model on bias, demographic fairness and generalizability.
+
 ## Step-by-step instructions: Training
 
 The code for the LSTM-based models can be found in the `keras_models` directory and
-the ``main.py`` file to train the models is situated in the `in_hospital_mortality` directory.
+the ``main.py`` file to train the models is situated in the `ihm` directory.
 As these models take relatively long to train, it is advised to submit a job file to SLURM on NERO.
 These can be found in the `slurm_jobs` directory. The following steps have to be followed to successfully
 submit a job:
@@ -29,8 +47,8 @@ are named `lstm_{variables}.py`.
 
 Go over all code chunks in the .sh file to make sure they fit with your needs and file organization:
 
-- main script file: mimic3models.in_hospital_mortality.main
-- model: mimic3models/keras_models/channel_wise_lstms.py
+- main script file: models.ihm.main
+- model: models/keras_models/channel_wise_lstms.py
 - data: data/aug/mortality 
 - demographics: --mask_demographics "Ethnicity" "Gender" "Insurance" (a selection of these three)
 - additional parameters: --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 50
@@ -54,27 +72,29 @@ and is uniquely identified by its job ID.
 
 **1. Select best model**
 
-The first step is to find the best model epoch based on the validation AUC-ROC score. The above training procedure 
-has stored a .csv file in the `keras_logs` directory named in the following fashion:
+The first step is to find the best model epoch based on the validation AUROC score. The above training procedure 
+has stored a .csv file in the `keras_logs` directory which can be fed into the following function:
 
-
-It contains all the relevant performance metrics on both train and validation data for each training epoch.
-The epoch associated with the highest `val_auroc` should be chosen as the final model to be tested.
+        models.common_utils.optimal_epoch('{date}.k_clstms.{demographics}.csv', {'mimic'/'starr'})
+    
+The file contains all the relevant performance metrics on both train and validation data for each training epoch.
+The function returns the epoch associated with the highest `val_auroc`. The model associated
+with this model epoch should be chosen as the final model to be tested.
 
 
 **2. Predictions on test data**
 
 In a Jupyter notebook, the following script is then run:
 
-        %run models/mimic3/in_hospital_mortality/main.py
+        %run models/ihm/main.py
 
 It takes a number of parameters to specify the testing procedure:
 
-        --network models/mimic3/keras_models/channel_wise_lstms.py
+        --network models/keras_models/channel_wise_lstms.py
         --mask_demographics "Ethnicity" "Gender" "Insurance" 
         --data data/aug/mortality 
         --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --size_coef 4.0
-        --load_state models/mimic3/in_hospital_mortality/keras_states/{date}/k_clstms.{demographics}.epoch{epoch}.state 
+        --load_state models/ihm/keras_states/{date}/k_clstms.{demographics}.epoch{epoch}.state 
         --mode test 
         
 **3. Analyse results**
@@ -93,14 +113,14 @@ confidence intervals of the relevant performance metrics by bootstrapping. The i
 are individually computed for all demographic groups and the whole test data. In a Jupyter
 notebook, write:
 
-        %run models/mimic3/evaluation/evaluate_ihm.py 
+        %run models/evaluation/evaluate_ihm.py 
 
 A number of parameters to specify the evaluation procedure need to be added on the same line:
 
         - listfile of test data: --test_listfile "data/aug/mortality/test/listfile.csv" 
         - number bootstrapping iterations: --n_iters 10000 
         - whether bootstrapping should be stratified by the outcome label: --stratify 
-        - test predictions: "models/mimic3/in_hospital_mortality/predictions/results/TEST.{date}.k_clstms.{demographics}.csv"
+        - test predictions: "models/ihm/predictions/results/TEST.{date}.k_clstms.{demographics}.csv"
 
 A .json file stores all computed confidence intervals in the `predictions/confvals` directory,
 which can then be loaded to perform further analysis and visualizations on them.
