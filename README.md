@@ -1,14 +1,15 @@
-# MIMIC III Model Fairness and Generalizability
+# Case Study: Fairness and Generalizability of MIMIC-Trained Model 
 
-This repository contains three main directories:
+This repository contains four main directories:
 
 - `benchmarks`: Pipeline to construct in-hospital mortality (IHM) cohorts
-    - *mimic3*: Using MIMIC-III v1.4 relational database
+    - *mimic*: Using MIMIC-III v1.4 relational database
     - *starr*: Using STARR_DE relational database
-- `models`: Training and testing protocols
-    - *mimic3*
-    - *starr*
-- `analysis`: Tools for performance, fairness and possibly generalizability/representativity analysis
+    - shared scripts
+- `models`: Training, testing and evaluation protocols
+- `notebooks`: Relevant Jupyter notebooks 
+- `slurm_jobs`: SLURM scripts for training the models
+
 
 
 
