@@ -29,7 +29,7 @@ Note that there is a flag that allows to specify whether additional demographic
 variables should be included in the ICU stay information.
 
        cd mimic3-benchmarks/
-       python -m mimic3benchmark.scripts.extract_subjects path_mimic data --add_demographics {True/False}
+       python -m benchmarks.scripts.extract_subjects path_mimic data {--add_demographics}
 
 **4. Clean events data** 
 
@@ -40,7 +40,7 @@ Next, the events data gets cleaned by excluding:
 It also retrieves missing ICUSTAY_ID by making use of the HADM_ID. This results 
 in the total exclusion of roughly 20% of all events.
 
-       python -m mimic3benchmark.scripts.validate_events data
+       python -m benchmarks.mimic.scripts.validate_events data
 
 
 **5. Break up per-subject data into separate episodes**
@@ -52,27 +52,27 @@ stored in ```{SUBJECT_ID}/episode{#}.csv```. Following the choice in step 3, the
 can be augmented by demographic information (gender, ethnicity and insurance type) 
 if setting the --add_demographics flag to true again.
 
-       python -m mimic3benchmark.scripts.extract_episodes_from_subjects data --add_demographics {True/False}
+       python -m benchmarks.mimic.scripts.extract_episodes_from_subjects data {--add_demographics}
 
 **6. Split into training and testing sets**
 
 The split is based on using 85% of the data for training and 15% for testing. 
 The seed is fixed to assure that the train/test split remains the same.
 
-       python -m mimic3benchmark.scripts.split_train_and_test data
+       python -m benchmarks.mimic.scripts.split_train_test data
 	
 **7. Generate task-specific datasets**
 
-These datasets can then be used to train and test models for the specific task. 
-Each command is independent.
+These datasets can then be used to train and test models for the specific task, in
+our case in-hospital-mortality:
 
-       python -m mimic3benchmark.scripts.create_in_hospital_mortality data data/mortality/
-       python -m mimic3benchmark.scripts.create_decompensation data data/decompensation/
+       python -m benchmarks.mimic.scripts.create_ihm data data/mortality/
+
 
 Before using a model, the training set has to be further split into training
 and validation sets as following:
     
-        python -m mimic3models.split_train_val data/{task}
+        python -m benchmarks.mimic.scripts.split_train_val data/mortality
     
     
 ## Resulting database
