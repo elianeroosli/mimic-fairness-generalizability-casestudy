@@ -18,7 +18,9 @@ This repository contains four main directories:
 - `notebooks`: Relevant Jupyter notebooks 
 - `slurm_jobs`: SLURM scripts for training the models
 
-
+Detailed usage instructions for for how to create benchmark cohorts, use the model
+architectures and analyze the output can be found in the README's of the 
+corresponding folders and subfolders.
 
 
 
