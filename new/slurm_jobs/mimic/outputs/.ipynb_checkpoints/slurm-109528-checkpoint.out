@@ -1,0 +1,5126 @@
+TRAINING THE CHANNEL-WISE LSTM without additional data
+/share/pi/boussard/eroosli_work/benchmarking/mimic3models/in_hospital_mortality/main_aug.py:7: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp
+Using TensorFlow backend.
+2020-04-08 22:24:59.403278: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer.so.6'; dlerror: libnvinfer.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /share/sw/open/oracle/18.5.0.0/lib/:
+2020-04-08 22:24:59.411426: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer_plugin.so.6'; dlerror: libnvinfer_plugin.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /share/sw/open/oracle/18.5.0.0/lib/:
+2020-04-08 22:24:59.411445: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:30] Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+==> using model mimic3models/keras_models/channel_wise_lstms_aug.py
+==> not used params in network class: dict_keys(['batch_size', 'beta_1', 'data', 'epochs', 'imputation', 'l1', 'l2', 'load_state', 'lr', 'mode', 'network', 'normalizer_state', 'optimizer', 'output_dir', 'prefix', 'save_every', 'small_part', 'target_repl_coef', 'timestep', 'verbose'])
+==> excluded demographics: ['Ethnicity', 'Gender', 'Insurance']
+==> found 17 channels: ['Capillary refill rate', 'Diastolic blood pressure', 'Fraction inspired oxygen', 'Glascow coma scale eye opening', 'Glascow coma scale motor response', 'Glascow coma scale total', 'Glascow coma scale verbal response', 'Glucose', 'Heart Rate', 'Height', 'Mean blood pressure', 'Oxygen saturation', 'Respiratory rate', 'Systolic blood pressure', 'Temperature', 'Weight', 'pH']
+2020-04-08 22:25:03.306566: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /share/sw/open/oracle/18.5.0.0/lib/:
+2020-04-08 22:25:03.306603: E tensorflow/stream_executor/cuda/cuda_driver.cc:351] failed call to cuInit: UNKNOWN ERROR (303)
+2020-04-08 22:25:03.306627: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (slurm-compute-nnq46): /proc/driver/nvidia/version does not exist
+2020-04-08 22:25:03.306795: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2020-04-08 22:25:03.331497: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2100000000 Hz
+2020-04-08 22:25:03.331789: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x560026f05640 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-04-08 22:25:03.331822: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+==> model.final_name: 2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0
+==> compiling the model
+Model: "network_1"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+X (InputLayer)                  (None, None, 76)     0                                            
+__________________________________________________________________________________________________
+masking_1 (Masking)             (None, None, 76)     0           X[0][0]                          
+__________________________________________________________________________________________________
+slice_1 (Slice)                 (None, None, 3)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_2 (Slice)                 (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_3 (Slice)                 (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_4 (Slice)                 (None, None, 9)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_5 (Slice)                 (None, None, 13)     0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_6 (Slice)                 (None, None, 14)     0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_7 (Slice)                 (None, None, 13)     0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_8 (Slice)                 (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_9 (Slice)                 (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_10 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_11 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_12 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_13 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_14 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_15 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_16 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+slice_17 (Slice)                (None, None, 2)      0           masking_1[0][0]                  
+__________________________________________________________________________________________________
+bidirectional_1 (Bidirectional) (None, None, 8)      256         slice_1[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_2 (Bidirectional) (None, None, 8)      224         slice_2[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_3 (Bidirectional) (None, None, 8)      224         slice_3[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_4 (Bidirectional) (None, None, 8)      448         slice_4[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_5 (Bidirectional) (None, None, 8)      576         slice_5[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_6 (Bidirectional) (None, None, 8)      608         slice_6[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_7 (Bidirectional) (None, None, 8)      576         slice_7[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_8 (Bidirectional) (None, None, 8)      224         slice_8[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_9 (Bidirectional) (None, None, 8)      224         slice_9[0][0]                    
+__________________________________________________________________________________________________
+bidirectional_10 (Bidirectional (None, None, 8)      224         slice_10[0][0]                   
+__________________________________________________________________________________________________
+bidirectional_11 (Bidirectional (None, None, 8)      224         slice_11[0][0]                   
+__________________________________________________________________________________________________
+bidirectional_12 (Bidirectional (None, None, 8)      224         slice_12[0][0]                   
+__________________________________________________________________________________________________
+bidirectional_13 (Bidirectional (None, None, 8)      224         slice_13[0][0]                   
+__________________________________________________________________________________________________
+bidirectional_14 (Bidirectional (None, None, 8)      224         slice_14[0][0]                   
+__________________________________________________________________________________________________
+bidirectional_15 (Bidirectional (None, None, 8)      224         slice_15[0][0]                   
+__________________________________________________________________________________________________
+bidirectional_16 (Bidirectional (None, None, 8)      224         slice_16[0][0]                   
+__________________________________________________________________________________________________
+bidirectional_17 (Bidirectional (None, None, 8)      224         slice_17[0][0]                   
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, None, 136)    0           bidirectional_1[0][0]            
+                                                                 bidirectional_2[0][0]            
+                                                                 bidirectional_3[0][0]            
+                                                                 bidirectional_4[0][0]            
+                                                                 bidirectional_5[0][0]            
+                                                                 bidirectional_6[0][0]            
+                                                                 bidirectional_7[0][0]            
+                                                                 bidirectional_8[0][0]            
+                                                                 bidirectional_9[0][0]            
+                                                                 bidirectional_10[0][0]           
+                                                                 bidirectional_11[0][0]           
+                                                                 bidirectional_12[0][0]           
+                                                                 bidirectional_13[0][0]           
+                                                                 bidirectional_14[0][0]           
+                                                                 bidirectional_15[0][0]           
+                                                                 bidirectional_16[0][0]           
+                                                                 bidirectional_17[0][0]           
+__________________________________________________________________________________________________
+lstm_18 (LSTM)                  (None, 32)           21632       concatenate_1[0][0]              
+__________________________________________________________________________________________________
+dropout_1 (Dropout)             (None, 32)           0           lstm_18[0][0]                    
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, 1)            33          dropout_1[0][0]                  
+==================================================================================================
+Total params: 26,817
+Trainable params: 26,817
+Non-trainable params: 0
+__________________________________________________________________________________________________
+==> training
+Train on 14681 samples, validate on 3222 samples
+Epoch 1/100
+ - 787s - loss: 0.3417 - val_loss: 0.3090
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12522   172]
+ [ 1620   367]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.877937
+precision class 0 = 0.885448
+precision class 1 = 0.680891
+recall class 0 = 0.98645
+recall class 1 = 0.184701
+false negative rate = 0.815299
+false positive rate = 0.01355
+positive prediction rate = 0.036714
+AUC of ROC = 0.825753
+AUC of PRC = 0.480345
+min(+P, Se) = 0.475591
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2734   52]
+ [ 352   84]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.874612
+precision class 0 = 0.885936
+precision class 1 = 0.617647
+recall class 0 = 0.981335
+recall class 1 = 0.192661
+false negative rate = 0.807339
+false positive rate = 0.018665
+positive prediction rate = 0.04221
+AUC of ROC = 0.824075
+AUC of PRC = 0.470399
+min(+P, Se) = 0.470183
+
+Epoch 00001: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch1.test0.30896512634964335.state
+Epoch 2/100
+ - 788s - loss: 0.3241 - val_loss: 0.2981
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12588   106]
+ [ 1655   332]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.880049
+precision class 0 = 0.883803
+precision class 1 = 0.757991
+recall class 0 = 0.99165
+recall class 1 = 0.167086
+false negative rate = 0.832914
+false positive rate = 0.00835
+positive prediction rate = 0.029834
+AUC of ROC = 0.851788
+AUC of PRC = 0.528367
+min(+P, Se) = 0.504278
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2758   28]
+ [ 363   73]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.878647
+precision class 0 = 0.883691
+precision class 1 = 0.722772
+recall class 0 = 0.98995
+recall class 1 = 0.167431
+false negative rate = 0.832569
+false positive rate = 0.01005
+positive prediction rate = 0.031347
+AUC of ROC = 0.846027
+AUC of PRC = 0.521312
+min(+P, Se) = 0.516854
+
+Epoch 00002: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch2.test0.29805617361872333.state
+Epoch 3/100
+ - 816s - loss: 0.3150 - val_loss: 0.2966
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12587   107]
+ [ 1648   339]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.880458
+precision class 0 = 0.884229
+precision class 1 = 0.76009
+recall class 0 = 0.991571
+recall class 1 = 0.170609
+false negative rate = 0.829391
+false positive rate = 0.008429
+positive prediction rate = 0.030379
+AUC of ROC = 0.850787
+AUC of PRC = 0.53074
+min(+P, Se) = 0.505533
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2766   20]
+ [ 362   74]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.88144
+precision class 0 = 0.884271
+precision class 1 = 0.787234
+recall class 0 = 0.992821
+recall class 1 = 0.169725
+false negative rate = 0.830275
+false positive rate = 0.007179
+positive prediction rate = 0.029174
+AUC of ROC = 0.846812
+AUC of PRC = 0.529293
+min(+P, Se) = 0.496599
+
+Epoch 00003: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch3.test0.2966012320325731.state
+Epoch 4/100
+ - 831s - loss: 0.3094 - val_loss: 0.2927
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12444   250]
+ [ 1451   536]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.884136
+precision class 0 = 0.895574
+precision class 1 = 0.681934
+recall class 0 = 0.980306
+recall class 1 = 0.269753
+false negative rate = 0.730247
+false positive rate = 0.019694
+positive prediction rate = 0.053539
+AUC of ROC = 0.847596
+AUC of PRC = 0.534227
+min(+P, Se) = 0.504781
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2717   69]
+ [ 312  124]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.88175
+precision class 0 = 0.896996
+precision class 1 = 0.642487
+recall class 0 = 0.975233
+recall class 1 = 0.284404
+false negative rate = 0.715596
+false positive rate = 0.024767
+positive prediction rate = 0.059901
+AUC of ROC = 0.84404
+AUC of PRC = 0.529526
+min(+P, Se) = 0.505721
+
+Epoch 00004: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch4.test0.2927492647613893.state
+Epoch 5/100
+ - 813s - loss: 0.3053 - val_loss: 0.2856
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12401   293]
+ [ 1356   631]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.887678
+precision class 0 = 0.901432
+precision class 1 = 0.6829
+recall class 0 = 0.976918
+recall class 1 = 0.317564
+false negative rate = 0.682436
+false positive rate = 0.023082
+positive prediction rate = 0.062938
+AUC of ROC = 0.863711
+AUC of PRC = 0.563873
+min(+P, Se) = 0.539738
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2713   73]
+ [ 291  145]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887027
+precision class 0 = 0.903129
+precision class 1 = 0.665138
+recall class 0 = 0.973798
+recall class 1 = 0.332569
+false negative rate = 0.667431
+false positive rate = 0.026202
+positive prediction rate = 0.06766
+AUC of ROC = 0.852768
+AUC of PRC = 0.550758
+min(+P, Se) = 0.506881
+
+Epoch 00005: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch5.test0.28563626634545536.state
+Epoch 6/100
+ - 808s - loss: 0.3028 - val_loss: 0.2859
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12423   271]
+ [ 1364   623]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.888632
+precision class 0 = 0.901066
+precision class 1 = 0.696868
+recall class 0 = 0.978651
+recall class 1 = 0.313538
+false negative rate = 0.686462
+false positive rate = 0.021349
+positive prediction rate = 0.060895
+AUC of ROC = 0.86387
+AUC of PRC = 0.563852
+min(+P, Se) = 0.531958
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2707   79]
+ [ 301  135]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882061
+precision class 0 = 0.899934
+precision class 1 = 0.630841
+recall class 0 = 0.971644
+recall class 1 = 0.309633
+false negative rate = 0.690367
+false positive rate = 0.028356
+positive prediction rate = 0.066418
+AUC of ROC = 0.85285
+AUC of PRC = 0.551053
+min(+P, Se) = 0.518349
+
+Epoch 00006: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch6.test0.28594935138280314.state
+Epoch 7/100
+ - 805s - loss: 0.3018 - val_loss: 0.2847
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12555   139]
+ [ 1496   491]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.888632
+precision class 0 = 0.893531
+precision class 1 = 0.779365
+recall class 0 = 0.98905
+recall class 1 = 0.247106
+false negative rate = 0.752894
+false positive rate = 0.01095
+positive prediction rate = 0.042913
+AUC of ROC = 0.867239
+AUC of PRC = 0.574835
+min(+P, Se) = 0.542023
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2750   36]
+ [ 334  102]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885164
+precision class 0 = 0.891699
+precision class 1 = 0.73913
+recall class 0 = 0.987078
+recall class 1 = 0.233945
+false negative rate = 0.766055
+false positive rate = 0.012922
+positive prediction rate = 0.042831
+AUC of ROC = 0.855743
+AUC of PRC = 0.554314
+min(+P, Se) = 0.520642
+
+Epoch 00007: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch7.test0.2846512114322755.state
+Epoch 8/100
+ - 804s - loss: 0.3027 - val_loss: 0.2878
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12549   145]
+ [ 1520   467]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.886588
+precision class 0 = 0.891961
+precision class 1 = 0.763072
+recall class 0 = 0.988577
+recall class 1 = 0.235028
+false negative rate = 0.764972
+false positive rate = 0.011423
+positive prediction rate = 0.041687
+AUC of ROC = 0.86531
+AUC of PRC = 0.565277
+min(+P, Se) = 0.532964
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2739   47]
+ [ 337   99]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.880819
+precision class 0 = 0.890442
+precision class 1 = 0.678082
+recall class 0 = 0.98313
+recall class 1 = 0.227064
+false negative rate = 0.772936
+false positive rate = 0.01687
+positive prediction rate = 0.045313
+AUC of ROC = 0.854471
+AUC of PRC = 0.540039
+min(+P, Se) = 0.509174
+
+Epoch 00008: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch8.test0.28780315234137943.state
+Epoch 9/100
+ - 818s - loss: 0.2993 - val_loss: 0.2839
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12522   172]
+ [ 1446   541]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.88979
+precision class 0 = 0.896478
+precision class 1 = 0.758766
+recall class 0 = 0.98645
+recall class 1 = 0.27227
+false negative rate = 0.72773
+false positive rate = 0.01355
+positive prediction rate = 0.048566
+AUC of ROC = 0.869494
+AUC of PRC = 0.575989
+min(+P, Se) = 0.53997
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2726   60]
+ [ 317  119]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882992
+precision class 0 = 0.895826
+precision class 1 = 0.664804
+recall class 0 = 0.978464
+recall class 1 = 0.272936
+false negative rate = 0.727064
+false positive rate = 0.021536
+positive prediction rate = 0.055556
+AUC of ROC = 0.858102
+AUC of PRC = 0.550907
+min(+P, Se) = 0.513761
+
+Epoch 00009: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch9.test0.2839495770397355.state
+Epoch 10/100
+ - 819s - loss: 0.2977 - val_loss: 0.2864
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12511   183]
+ [ 1471   516]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.887337
+precision class 0 = 0.894793
+precision class 1 = 0.738197
+recall class 0 = 0.985584
+recall class 1 = 0.259688
+false negative rate = 0.740312
+false positive rate = 0.014416
+positive prediction rate = 0.047613
+AUC of ROC = 0.866095
+AUC of PRC = 0.568748
+min(+P, Se) = 0.535211
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2736   50]
+ [ 322  114]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884544
+precision class 0 = 0.894702
+precision class 1 = 0.695122
+recall class 0 = 0.982053
+recall class 1 = 0.261468
+false negative rate = 0.738532
+false positive rate = 0.017947
+positive prediction rate = 0.0509
+AUC of ROC = 0.853991
+AUC of PRC = 0.547588
+min(+P, Se) = 0.511468
+
+Epoch 00010: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch10.test0.2863837457189717.state
+Epoch 11/100
+ - 808s - loss: 0.2998 - val_loss: 0.2829
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12457   237]
+ [ 1407   580]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.888019
+precision class 0 = 0.898514
+precision class 1 = 0.709914
+recall class 0 = 0.98133
+recall class 1 = 0.291897
+false negative rate = 0.708103
+false positive rate = 0.01867
+positive prediction rate = 0.05565
+AUC of ROC = 0.868231
+AUC of PRC = 0.570472
+min(+P, Se) = 0.536487
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2724   62]
+ [ 307  129]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885475
+precision class 0 = 0.898713
+precision class 1 = 0.675393
+recall class 0 = 0.977746
+recall class 1 = 0.295872
+false negative rate = 0.704128
+false positive rate = 0.022254
+positive prediction rate = 0.05928
+AUC of ROC = 0.858009
+AUC of PRC = 0.550024
+min(+P, Se) = 0.518349
+
+Epoch 00011: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch11.test0.2828689961978029.state
+Epoch 12/100
+ - 812s - loss: 0.2957 - val_loss: 0.2839
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12537   157]
+ [ 1495   492]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.887474
+precision class 0 = 0.893458
+precision class 1 = 0.758089
+recall class 0 = 0.987632
+recall class 1 = 0.247609
+false negative rate = 0.752391
+false positive rate = 0.012368
+positive prediction rate = 0.044207
+AUC of ROC = 0.87194
+AUC of PRC = 0.58252
+min(+P, Se) = 0.546553
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2745   41]
+ [ 332  104]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884233
+precision class 0 = 0.892103
+precision class 1 = 0.717241
+recall class 0 = 0.985284
+recall class 1 = 0.238532
+false negative rate = 0.761468
+false positive rate = 0.014716
+positive prediction rate = 0.045003
+AUC of ROC = 0.859417
+AUC of PRC = 0.559308
+min(+P, Se) = 0.530892
+
+Epoch 00012: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch12.test0.2838967027666405.state
+Epoch 13/100
+ - 812s - loss: 0.2944 - val_loss: 0.2842
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12601    93]
+ [ 1573   414]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.88652
+precision class 0 = 0.889022
+precision class 1 = 0.816568
+recall class 0 = 0.992674
+recall class 1 = 0.208354
+false negative rate = 0.791646
+false positive rate = 0.007326
+positive prediction rate = 0.034534
+AUC of ROC = 0.871786
+AUC of PRC = 0.582646
+min(+P, Se) = 0.540513
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2762   24]
+ [ 348   88]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884544
+precision class 0 = 0.888103
+precision class 1 = 0.785714
+recall class 0 = 0.991386
+recall class 1 = 0.201835
+false negative rate = 0.798165
+false positive rate = 0.008615
+positive prediction rate = 0.034761
+AUC of ROC = 0.85789
+AUC of PRC = 0.557753
+min(+P, Se) = 0.506881
+
+Epoch 00013: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch13.test0.28422577525150844.state
+Epoch 14/100
+ - 806s - loss: 0.2909 - val_loss: 0.2829
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12473   221]
+ [ 1376   611]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.89122
+precision class 0 = 0.900643
+precision class 1 = 0.734375
+recall class 0 = 0.98259
+recall class 1 = 0.307499
+false negative rate = 0.692501
+false positive rate = 0.01741
+positive prediction rate = 0.056672
+AUC of ROC = 0.875368
+AUC of PRC = 0.585779
+min(+P, Se) = 0.547739
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2716   70]
+ [ 304  132]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883923
+precision class 0 = 0.899338
+precision class 1 = 0.653465
+recall class 0 = 0.974874
+recall class 1 = 0.302752
+false negative rate = 0.697248
+false positive rate = 0.025126
+positive prediction rate = 0.062694
+AUC of ROC = 0.859573
+AUC of PRC = 0.554671
+min(+P, Se) = 0.520642
+
+Epoch 00014: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch14.test0.28288216031000973.state
+Epoch 15/100
+ - 821s - loss: 0.2908 - val_loss: 0.2829
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12491   203]
+ [ 1420   567]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.889449
+precision class 0 = 0.897923
+precision class 1 = 0.736364
+recall class 0 = 0.984008
+recall class 1 = 0.285355
+false negative rate = 0.714645
+false positive rate = 0.015992
+positive prediction rate = 0.052449
+AUC of ROC = 0.874012
+AUC of PRC = 0.579375
+min(+P, Se) = 0.544769
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2720   66]
+ [ 311  125]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882992
+precision class 0 = 0.897394
+precision class 1 = 0.65445
+recall class 0 = 0.97631
+recall class 1 = 0.286697
+false negative rate = 0.713303
+false positive rate = 0.02369
+positive prediction rate = 0.05928
+AUC of ROC = 0.859268
+AUC of PRC = 0.551974
+min(+P, Se) = 0.522936
+
+Epoch 00015: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch15.test0.28289899406671376.state
+Epoch 16/100
+ - 830s - loss: 0.2913 - val_loss: 0.2836
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12576   118]
+ [ 1510   477]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.889108
+precision class 0 = 0.892801
+precision class 1 = 0.801681
+recall class 0 = 0.990704
+recall class 1 = 0.24006
+false negative rate = 0.75994
+false positive rate = 0.009296
+positive prediction rate = 0.040529
+AUC of ROC = 0.875198
+AUC of PRC = 0.590366
+min(+P, Se) = 0.551533
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2748   38]
+ [ 337   99]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883613
+precision class 0 = 0.890762
+precision class 1 = 0.722628
+recall class 0 = 0.98636
+recall class 1 = 0.227064
+false negative rate = 0.772936
+false positive rate = 0.01364
+positive prediction rate = 0.04252
+AUC of ROC = 0.857602
+AUC of PRC = 0.552348
+min(+P, Se) = 0.516055
+
+Epoch 00016: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch16.test0.28357100747595065.state
+Epoch 17/100
+ - 807s - loss: 0.2893 - val_loss: 0.2840
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12515   179]
+ [ 1420   567]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.891084
+precision class 0 = 0.898098
+precision class 1 = 0.760054
+recall class 0 = 0.985899
+recall class 1 = 0.285355
+false negative rate = 0.714645
+false positive rate = 0.014101
+positive prediction rate = 0.050814
+AUC of ROC = 0.879655
+AUC of PRC = 0.59937
+min(+P, Se) = 0.562657
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2726   60]
+ [ 317  119]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882992
+precision class 0 = 0.895826
+precision class 1 = 0.664804
+recall class 0 = 0.978464
+recall class 1 = 0.272936
+false negative rate = 0.727064
+false positive rate = 0.021536
+positive prediction rate = 0.055556
+AUC of ROC = 0.856102
+AUC of PRC = 0.556637
+min(+P, Se) = 0.536697
+
+Epoch 00017: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch17.test0.2839994828600013.state
+Epoch 18/100
+ - 816s - loss: 0.2872 - val_loss: 0.2804
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12538   156]
+ [ 1442   545]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.891152
+precision class 0 = 0.896853
+precision class 1 = 0.777461
+recall class 0 = 0.987711
+recall class 1 = 0.274283
+false negative rate = 0.725717
+false positive rate = 0.012289
+positive prediction rate = 0.047749
+AUC of ROC = 0.877324
+AUC of PRC = 0.594324
+min(+P, Se) = 0.552592
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2732   54]
+ [ 318  118]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884544
+precision class 0 = 0.895738
+precision class 1 = 0.686047
+recall class 0 = 0.980617
+recall class 1 = 0.270642
+false negative rate = 0.729358
+false positive rate = 0.019383
+positive prediction rate = 0.053383
+AUC of ROC = 0.860574
+AUC of PRC = 0.55398
+min(+P, Se) = 0.527523
+
+Epoch 00018: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch18.test0.2804076776213708.state
+Epoch 19/100
+ - 816s - loss: 0.2906 - val_loss: 0.2820
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12554   140]
+ [ 1468   519]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.890471
+precision class 0 = 0.895307
+precision class 1 = 0.787557
+recall class 0 = 0.988971
+recall class 1 = 0.261198
+false negative rate = 0.738802
+false positive rate = 0.011029
+positive prediction rate = 0.044888
+AUC of ROC = 0.877406
+AUC of PRC = 0.599727
+min(+P, Se) = 0.555723
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2737   49]
+ [ 329  107]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882682
+precision class 0 = 0.892694
+precision class 1 = 0.685897
+recall class 0 = 0.982412
+recall class 1 = 0.245413
+false negative rate = 0.754587
+false positive rate = 0.017588
+positive prediction rate = 0.048417
+AUC of ROC = 0.862918
+AUC of PRC = 0.557845
+min(+P, Se) = 0.527523
+
+Epoch 00019: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch19.test0.28201638789261296.state
+Epoch 20/100
+ - 816s - loss: 0.2866 - val_loss: 0.2860
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12563   131]
+ [ 1473   514]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.890743
+precision class 0 = 0.895056
+precision class 1 = 0.796899
+recall class 0 = 0.98968
+recall class 1 = 0.258681
+false negative rate = 0.741319
+false positive rate = 0.01032
+positive prediction rate = 0.043934
+AUC of ROC = 0.878865
+AUC of PRC = 0.597803
+min(+P, Se) = 0.548062
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2743   43]
+ [ 332  104]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883613
+precision class 0 = 0.892033
+precision class 1 = 0.707483
+recall class 0 = 0.984566
+recall class 1 = 0.238532
+false negative rate = 0.761468
+false positive rate = 0.015434
+positive prediction rate = 0.045624
+AUC of ROC = 0.856094
+AUC of PRC = 0.553797
+min(+P, Se) = 0.529817
+
+Epoch 00020: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch20.test0.2859850617011166.state
+Epoch 21/100
+ - 822s - loss: 0.2862 - val_loss: 0.2824
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12473   221]
+ [ 1384   603]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.890675
+precision class 0 = 0.900123
+precision class 1 = 0.731796
+recall class 0 = 0.98259
+recall class 1 = 0.303473
+false negative rate = 0.696527
+false positive rate = 0.01741
+positive prediction rate = 0.056127
+AUC of ROC = 0.880906
+AUC of PRC = 0.595986
+min(+P, Se) = 0.552089
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2712   74]
+ [ 313  123]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.879888
+precision class 0 = 0.896529
+precision class 1 = 0.624366
+recall class 0 = 0.973439
+recall class 1 = 0.28211
+false negative rate = 0.71789
+false positive rate = 0.026561
+positive prediction rate = 0.061142
+AUC of ROC = 0.857503
+AUC of PRC = 0.55139
+min(+P, Se) = 0.521542
+
+Epoch 00021: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch21.test0.28237873939930247.state
+Epoch 22/100
+ - 826s - loss: 0.2858 - val_loss: 0.2833
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12517   177]
+ [ 1433   554]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.890334
+precision class 0 = 0.897276
+precision class 1 = 0.757866
+recall class 0 = 0.986056
+recall class 1 = 0.278812
+false negative rate = 0.721188
+false positive rate = 0.013944
+positive prediction rate = 0.049792
+AUC of ROC = 0.879307
+AUC of PRC = 0.597805
+min(+P, Se) = 0.550579
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2730   56]
+ [ 322  114]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882682
+precision class 0 = 0.894495
+precision class 1 = 0.670588
+recall class 0 = 0.9799
+recall class 1 = 0.261468
+false negative rate = 0.738532
+false positive rate = 0.020101
+positive prediction rate = 0.052762
+AUC of ROC = 0.859818
+AUC of PRC = 0.558181
+min(+P, Se) = 0.518349
+
+Epoch 00022: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch22.test0.28325910615132954.state
+Epoch 23/100
+ - 818s - loss: 0.2885 - val_loss: 0.2851
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12547   147]
+ [ 1452   535]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.891084
+precision class 0 = 0.896278
+precision class 1 = 0.784458
+recall class 0 = 0.98842
+recall class 1 = 0.26925
+false negative rate = 0.73075
+false positive rate = 0.01158
+positive prediction rate = 0.046455
+AUC of ROC = 0.879562
+AUC of PRC = 0.598667
+min(+P, Se) = 0.541981
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2739   47]
+ [ 326  110]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884233
+precision class 0 = 0.893638
+precision class 1 = 0.700637
+recall class 0 = 0.98313
+recall class 1 = 0.252294
+false negative rate = 0.747706
+false positive rate = 0.01687
+positive prediction rate = 0.048727
+AUC of ROC = 0.857605
+AUC of PRC = 0.554664
+min(+P, Se) = 0.514874
+
+Epoch 00023: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch23.test0.2851053160897957.state
+Epoch 24/100
+ - 818s - loss: 0.2847 - val_loss: 0.2808
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12500   194]
+ [ 1343   644]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.895307
+precision class 0 = 0.902983
+precision class 1 = 0.768496
+recall class 0 = 0.984717
+recall class 1 = 0.324107
+false negative rate = 0.675893
+false positive rate = 0.015283
+positive prediction rate = 0.057081
+AUC of ROC = 0.884641
+AUC of PRC = 0.613264
+min(+P, Se) = 0.562657
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2714   72]
+ [ 297  139]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885475
+precision class 0 = 0.901362
+precision class 1 = 0.658768
+recall class 0 = 0.974156
+recall class 1 = 0.318807
+false negative rate = 0.681193
+false positive rate = 0.025844
+positive prediction rate = 0.065487
+AUC of ROC = 0.860229
+AUC of PRC = 0.557258
+min(+P, Se) = 0.509174
+
+Epoch 00024: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch24.test0.2807870437914285.state
+Epoch 25/100
+ - 806s - loss: 0.2843 - val_loss: 0.2773
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12534   160]
+ [ 1380   607]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.895103
+precision class 0 = 0.900819
+precision class 1 = 0.791395
+recall class 0 = 0.987396
+recall class 1 = 0.305486
+false negative rate = 0.694514
+false positive rate = 0.012604
+positive prediction rate = 0.052244
+AUC of ROC = 0.887445
+AUC of PRC = 0.623579
+min(+P, Se) = 0.57265
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2735   51]
+ [ 308  128]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888579
+precision class 0 = 0.898784
+precision class 1 = 0.715084
+recall class 0 = 0.981694
+recall class 1 = 0.293578
+false negative rate = 0.706422
+false positive rate = 0.018306
+positive prediction rate = 0.055556
+AUC of ROC = 0.863474
+AUC of PRC = 0.567295
+min(+P, Se) = 0.53211
+
+Epoch 00025: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch25.test0.2773251149740965.state
+Epoch 26/100
+ - 814s - loss: 0.2833 - val_loss: 0.2840
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12574   120]
+ [ 1476   511]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.891288
+precision class 0 = 0.894947
+precision class 1 = 0.809826
+recall class 0 = 0.990547
+recall class 1 = 0.257172
+false negative rate = 0.742828
+false positive rate = 0.009453
+positive prediction rate = 0.042981
+AUC of ROC = 0.886013
+AUC of PRC = 0.619261
+min(+P, Se) = 0.563161
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2748   38]
+ [ 335  101]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884233
+precision class 0 = 0.89134
+precision class 1 = 0.726619
+recall class 0 = 0.98636
+recall class 1 = 0.231651
+false negative rate = 0.768349
+false positive rate = 0.01364
+positive prediction rate = 0.043141
+AUC of ROC = 0.860208
+AUC of PRC = 0.562732
+min(+P, Se) = 0.522321
+
+Epoch 00026: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch26.test0.2840388106132501.state
+Epoch 27/100
+ - 815s - loss: 0.2831 - val_loss: 0.2808
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12582   112]
+ [ 1480   507]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.89156
+precision class 0 = 0.894752
+precision class 1 = 0.819063
+recall class 0 = 0.991177
+recall class 1 = 0.255159
+false negative rate = 0.744841
+false positive rate = 0.008823
+positive prediction rate = 0.042163
+AUC of ROC = 0.887581
+AUC of PRC = 0.62209
+min(+P, Se) = 0.574447
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2747   39]
+ [ 337   99]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883302
+precision class 0 = 0.890726
+precision class 1 = 0.717391
+recall class 0 = 0.986001
+recall class 1 = 0.227064
+false negative rate = 0.772936
+false positive rate = 0.013999
+positive prediction rate = 0.042831
+AUC of ROC = 0.86234
+AUC of PRC = 0.56244
+min(+P, Se) = 0.52381
+
+Epoch 00027: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch27.test0.2808169369544767.state
+Epoch 28/100
+ - 817s - loss: 0.2804 - val_loss: 0.2803
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12539   155]
+ [ 1395   592]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.894421
+precision class 0 = 0.899885
+precision class 1 = 0.792503
+recall class 0 = 0.98779
+recall class 1 = 0.297937
+false negative rate = 0.702063
+false positive rate = 0.01221
+positive prediction rate = 0.050882
+AUC of ROC = 0.884762
+AUC of PRC = 0.619314
+min(+P, Se) = 0.566901
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2726   60]
+ [ 311  125]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.897596
+precision class 1 = 0.675676
+recall class 0 = 0.978464
+recall class 1 = 0.286697
+false negative rate = 0.713303
+false positive rate = 0.021536
+positive prediction rate = 0.057418
+AUC of ROC = 0.860293
+AUC of PRC = 0.560482
+min(+P, Se) = 0.516055
+
+Epoch 00028: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch28.test0.28029881988916244.state
+Epoch 29/100
+ - 814s - loss: 0.2841 - val_loss: 0.2835
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12481   213]
+ [ 1332   655]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.894762
+precision class 0 = 0.903569
+precision class 1 = 0.754608
+recall class 0 = 0.98322
+recall class 1 = 0.329643
+false negative rate = 0.670357
+false positive rate = 0.01678
+positive prediction rate = 0.059124
+AUC of ROC = 0.886506
+AUC of PRC = 0.620909
+min(+P, Se) = 0.565566
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2706   80]
+ [ 300  136]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882061
+precision class 0 = 0.9002
+precision class 1 = 0.62963
+recall class 0 = 0.971285
+recall class 1 = 0.311927
+false negative rate = 0.688073
+false positive rate = 0.028715
+positive prediction rate = 0.067039
+AUC of ROC = 0.859472
+AUC of PRC = 0.557526
+min(+P, Se) = 0.515982
+
+Epoch 00029: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch29.test0.2834584549541136.state
+Epoch 30/100
+ - 806s - loss: 0.2851 - val_loss: 0.2833
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12573   121]
+ [ 1457   530]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.892514
+precision class 0 = 0.896151
+precision class 1 = 0.814132
+recall class 0 = 0.990468
+recall class 1 = 0.266734
+false negative rate = 0.733266
+false positive rate = 0.009532
+positive prediction rate = 0.044343
+AUC of ROC = 0.885489
+AUC of PRC = 0.619113
+min(+P, Se) = 0.566683
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2740   46]
+ [ 325  111]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.893964
+precision class 1 = 0.707006
+recall class 0 = 0.983489
+recall class 1 = 0.254587
+false negative rate = 0.745413
+false positive rate = 0.016511
+positive prediction rate = 0.048727
+AUC of ROC = 0.860819
+AUC of PRC = 0.559
+min(+P, Se) = 0.522936
+
+Epoch 00030: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch30.test0.2832746206234139.state
+Epoch 31/100
+ - 803s - loss: 0.2840 - val_loss: 0.2815
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12530   164]
+ [ 1347   640]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.897078
+precision class 0 = 0.902933
+precision class 1 = 0.79602
+recall class 0 = 0.987081
+recall class 1 = 0.322094
+false negative rate = 0.677906
+false positive rate = 0.012919
+positive prediction rate = 0.054765
+AUC of ROC = 0.891359
+AUC of PRC = 0.63401
+min(+P, Se) = 0.580775
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2727   59]
+ [ 310  126]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885475
+precision class 0 = 0.897926
+precision class 1 = 0.681081
+recall class 0 = 0.978823
+recall class 1 = 0.288991
+false negative rate = 0.711009
+false positive rate = 0.021177
+positive prediction rate = 0.057418
+AUC of ROC = 0.862719
+AUC of PRC = 0.560365
+min(+P, Se) = 0.518349
+
+Epoch 00031: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch31.test0.28153176815205666.state
+Epoch 32/100
+ - 804s - loss: 0.2810 - val_loss: 0.2814
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12540   154]
+ [ 1397   590]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.894353
+precision class 0 = 0.899763
+precision class 1 = 0.793011
+recall class 0 = 0.987868
+recall class 1 = 0.29693
+false negative rate = 0.70307
+false positive rate = 0.012132
+positive prediction rate = 0.050678
+AUC of ROC = 0.887529
+AUC of PRC = 0.624272
+min(+P, Se) = 0.575956
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2735   51]
+ [ 311  125]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887647
+precision class 0 = 0.897899
+precision class 1 = 0.710227
+recall class 0 = 0.981694
+recall class 1 = 0.286697
+false negative rate = 0.713303
+false positive rate = 0.018306
+positive prediction rate = 0.054624
+AUC of ROC = 0.864413
+AUC of PRC = 0.563789
+min(+P, Se) = 0.527523
+
+Epoch 00032: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch32.test0.28141715225643954.state
+Epoch 33/100
+ - 799s - loss: 0.2784 - val_loss: 0.2812
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12542   152]
+ [ 1412   575]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.893468
+precision class 0 = 0.89881
+precision class 1 = 0.790922
+recall class 0 = 0.988026
+recall class 1 = 0.289381
+false negative rate = 0.710619
+false positive rate = 0.011974
+positive prediction rate = 0.04952
+AUC of ROC = 0.88721
+AUC of PRC = 0.621184
+min(+P, Se) = 0.571141
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 320  116]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884233
+precision class 0 = 0.895185
+precision class 1 = 0.686391
+recall class 0 = 0.980976
+recall class 1 = 0.266055
+false negative rate = 0.733945
+false positive rate = 0.019024
+positive prediction rate = 0.052452
+AUC of ROC = 0.862241
+AUC of PRC = 0.560587
+min(+P, Se) = 0.517241
+
+Epoch 00033: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch33.test0.2812076233059149.state
+Epoch 34/100
+ - 815s - loss: 0.2810 - val_loss: 0.2786
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12516   178]
+ [ 1339   648]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.896669
+precision class 0 = 0.903356
+precision class 1 = 0.784504
+recall class 0 = 0.985978
+recall class 1 = 0.32612
+false negative rate = 0.67388
+false positive rate = 0.014022
+positive prediction rate = 0.056263
+AUC of ROC = 0.891762
+AUC of PRC = 0.632783
+min(+P, Se) = 0.57998
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2722   64]
+ [ 308  128]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884544
+precision class 0 = 0.89835
+precision class 1 = 0.666667
+recall class 0 = 0.977028
+recall class 1 = 0.293578
+false negative rate = 0.706422
+false positive rate = 0.022972
+positive prediction rate = 0.05959
+AUC of ROC = 0.863434
+AUC of PRC = 0.559238
+min(+P, Se) = 0.525229
+
+Epoch 00034: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch34.test0.27857842406895056.state
+Epoch 35/100
+ - 818s - loss: 0.2796 - val_loss: 0.2783
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12520   174]
+ [ 1331   656]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.897487
+precision class 0 = 0.903906
+precision class 1 = 0.790361
+recall class 0 = 0.986293
+recall class 1 = 0.330146
+false negative rate = 0.669854
+false positive rate = 0.013707
+positive prediction rate = 0.056536
+AUC of ROC = 0.893685
+AUC of PRC = 0.642209
+min(+P, Se) = 0.584298
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 307  129]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888268
+precision class 0 = 0.899013
+precision class 1 = 0.708791
+recall class 0 = 0.980976
+recall class 1 = 0.295872
+false negative rate = 0.704128
+false positive rate = 0.019024
+positive prediction rate = 0.056487
+AUC of ROC = 0.862976
+AUC of PRC = 0.567493
+min(+P, Se) = 0.525843
+
+Epoch 00035: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch35.test0.2783077259765953.state
+Epoch 36/100
+ - 814s - loss: 0.2792 - val_loss: 0.2853
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12536   158]
+ [ 1382   605]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.895103
+precision class 0 = 0.900704
+precision class 1 = 0.792923
+recall class 0 = 0.987553
+recall class 1 = 0.304479
+false negative rate = 0.695521
+false positive rate = 0.012447
+positive prediction rate = 0.051972
+AUC of ROC = 0.892268
+AUC of PRC = 0.631222
+min(+P, Se) = 0.577755
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2731   55]
+ [ 316  120]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.896291
+precision class 1 = 0.685714
+recall class 0 = 0.980258
+recall class 1 = 0.275229
+false negative rate = 0.724771
+false positive rate = 0.019742
+positive prediction rate = 0.054314
+AUC of ROC = 0.856158
+AUC of PRC = 0.549107
+min(+P, Se) = 0.509174
+
+Epoch 00036: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch36.test0.28531201322540445.state
+Epoch 37/100
+ - 807s - loss: 0.2777 - val_loss: 0.2812
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12541   153]
+ [ 1341   646]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.898236
+precision class 0 = 0.9034
+precision class 1 = 0.808511
+recall class 0 = 0.987947
+recall class 1 = 0.325113
+false negative rate = 0.674887
+false positive rate = 0.012053
+positive prediction rate = 0.054424
+AUC of ROC = 0.893616
+AUC of PRC = 0.644346
+min(+P, Se) = 0.581278
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2727   59]
+ [ 304  132]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887337
+precision class 0 = 0.899703
+precision class 1 = 0.691099
+recall class 0 = 0.978823
+recall class 1 = 0.302752
+false negative rate = 0.697248
+false positive rate = 0.021177
+positive prediction rate = 0.05928
+AUC of ROC = 0.860234
+AUC of PRC = 0.557001
+min(+P, Se) = 0.525229
+
+Epoch 00037: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch37.test0.28123303005630224.state
+Epoch 38/100
+ - 805s - loss: 0.2792 - val_loss: 0.2829
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12576   118]
+ [ 1408   579]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.896056
+precision class 0 = 0.899314
+precision class 1 = 0.830703
+recall class 0 = 0.990704
+recall class 1 = 0.291394
+false negative rate = 0.708606
+false positive rate = 0.009296
+positive prediction rate = 0.047476
+AUC of ROC = 0.895385
+AUC of PRC = 0.64148
+min(+P, Se) = 0.578762
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2737   49]
+ [ 316  120]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886716
+precision class 0 = 0.896495
+precision class 1 = 0.710059
+recall class 0 = 0.982412
+recall class 1 = 0.275229
+false negative rate = 0.724771
+false positive rate = 0.017588
+positive prediction rate = 0.052452
+AUC of ROC = 0.858356
+AUC of PRC = 0.548569
+min(+P, Se) = 0.506881
+
+Epoch 00038: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch38.test0.2829388482629106.state
+Epoch 39/100
+ - 806s - loss: 0.2770 - val_loss: 0.2831
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12478   216]
+ [ 1311   676]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.895988
+precision class 0 = 0.904924
+precision class 1 = 0.757848
+recall class 0 = 0.982984
+recall class 1 = 0.340211
+false negative rate = 0.659789
+false positive rate = 0.017016
+positive prediction rate = 0.060759
+AUC of ROC = 0.893611
+AUC of PRC = 0.631966
+min(+P, Se) = 0.575453
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2713   73]
+ [ 306  130]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882371
+precision class 0 = 0.898642
+precision class 1 = 0.640394
+recall class 0 = 0.973798
+recall class 1 = 0.298165
+false negative rate = 0.701835
+false positive rate = 0.026202
+positive prediction rate = 0.063004
+AUC of ROC = 0.858663
+AUC of PRC = 0.54788
+min(+P, Se) = 0.516055
+
+Epoch 00039: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch39.test0.2831108378538946.state
+Epoch 40/100
+ - 812s - loss: 0.2717 - val_loss: 0.2905
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12539   155]
+ [ 1439   548]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.891424
+precision class 0 = 0.897053
+precision class 1 = 0.779516
+recall class 0 = 0.98779
+recall class 1 = 0.275793
+false negative rate = 0.724207
+false positive rate = 0.01221
+positive prediction rate = 0.047885
+AUC of ROC = 0.884202
+AUC of PRC = 0.614061
+min(+P, Se) = 0.568193
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2738   48]
+ [ 324  112]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884544
+precision class 0 = 0.894187
+precision class 1 = 0.7
+recall class 0 = 0.982771
+recall class 1 = 0.256881
+false negative rate = 0.743119
+false positive rate = 0.017229
+positive prediction rate = 0.049659
+AUC of ROC = 0.855231
+AUC of PRC = 0.547697
+min(+P, Se) = 0.511468
+
+Epoch 00040: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch40.test0.29052622824870306.state
+Epoch 41/100
+ - 815s - loss: 0.2769 - val_loss: 0.2821
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12499   195]
+ [ 1271   716]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.900143
+precision class 0 = 0.907698
+precision class 1 = 0.78595
+recall class 0 = 0.984638
+recall class 1 = 0.360342
+false negative rate = 0.639658
+false positive rate = 0.015362
+positive prediction rate = 0.062053
+AUC of ROC = 0.898227
+AUC of PRC = 0.649437
+min(+P, Se) = 0.592854
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2712   74]
+ [ 293  143]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886096
+precision class 0 = 0.902496
+precision class 1 = 0.658986
+recall class 0 = 0.973439
+recall class 1 = 0.327982
+false negative rate = 0.672018
+false positive rate = 0.026561
+positive prediction rate = 0.067349
+AUC of ROC = 0.858158
+AUC of PRC = 0.55289
+min(+P, Se) = 0.509174
+
+Epoch 00041: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch41.test0.28212029678362044.state
+Epoch 42/100
+ - 822s - loss: 0.2749 - val_loss: 0.2842
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12566   128]
+ [ 1349   638]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899394
+precision class 0 = 0.903054
+precision class 1 = 0.832898
+recall class 0 = 0.989917
+recall class 1 = 0.321087
+false negative rate = 0.678913
+false positive rate = 0.010084
+positive prediction rate = 0.052176
+AUC of ROC = 0.896376
+AUC of PRC = 0.651129
+min(+P, Se) = 0.586814
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2736   50]
+ [ 318  118]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885785
+precision class 0 = 0.895874
+precision class 1 = 0.702381
+recall class 0 = 0.982053
+recall class 1 = 0.270642
+false negative rate = 0.729358
+false positive rate = 0.017947
+positive prediction rate = 0.052142
+AUC of ROC = 0.860168
+AUC of PRC = 0.558937
+min(+P, Se) = 0.529817
+
+Epoch 00042: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch42.test0.28423114380874964.state
+Epoch 43/100
+ - 809s - loss: 0.2747 - val_loss: 0.2868
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12536   158]
+ [ 1323   664]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899121
+precision class 0 = 0.904539
+precision class 1 = 0.807786
+recall class 0 = 0.987553
+recall class 1 = 0.334172
+false negative rate = 0.665828
+false positive rate = 0.012447
+positive prediction rate = 0.055991
+AUC of ROC = 0.894978
+AUC of PRC = 0.646753
+min(+P, Se) = 0.586311
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2721   65]
+ [ 303  133]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885785
+precision class 0 = 0.899802
+precision class 1 = 0.671717
+recall class 0 = 0.976669
+recall class 1 = 0.305046
+false negative rate = 0.694954
+false positive rate = 0.023331
+positive prediction rate = 0.061453
+AUC of ROC = 0.855269
+AUC of PRC = 0.550506
+min(+P, Se) = 0.50905
+
+Epoch 00043: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch43.test0.2868331390543431.state
+Epoch 44/100
+ - 813s - loss: 0.2742 - val_loss: 0.2865
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12529   165]
+ [ 1335   652]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.897827
+precision class 0 = 0.903707
+precision class 1 = 0.798042
+recall class 0 = 0.987002
+recall class 1 = 0.328133
+false negative rate = 0.671867
+false positive rate = 0.012998
+positive prediction rate = 0.05565
+AUC of ROC = 0.896002
+AUC of PRC = 0.64374
+min(+P, Se) = 0.584801
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2721   65]
+ [ 301  135]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886406
+precision class 0 = 0.900397
+precision class 1 = 0.675
+recall class 0 = 0.976669
+recall class 1 = 0.309633
+false negative rate = 0.690367
+false positive rate = 0.023331
+positive prediction rate = 0.062073
+AUC of ROC = 0.856514
+AUC of PRC = 0.546165
+min(+P, Se) = 0.509978
+
+Epoch 00044: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch44.test0.286480651431891.state
+Epoch 45/100
+ - 812s - loss: 0.2734 - val_loss: 0.2847
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12527   167]
+ [ 1304   683]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899802
+precision class 0 = 0.905719
+precision class 1 = 0.803529
+recall class 0 = 0.986844
+recall class 1 = 0.343734
+false negative rate = 0.656266
+false positive rate = 0.013156
+positive prediction rate = 0.057898
+AUC of ROC = 0.899237
+AUC of PRC = 0.651979
+min(+P, Se) = 0.59386
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2718   68]
+ [ 298  138]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886406
+precision class 0 = 0.901194
+precision class 1 = 0.669903
+recall class 0 = 0.975592
+recall class 1 = 0.316514
+false negative rate = 0.683486
+false positive rate = 0.024408
+positive prediction rate = 0.063935
+AUC of ROC = 0.856848
+AUC of PRC = 0.54804
+min(+P, Se) = 0.504587
+
+Epoch 00045: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch45.test0.2847440170943922.state
+Epoch 46/100
+ - 819s - loss: 0.2727 - val_loss: 0.2849
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12530   164]
+ [ 1282   705]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901505
+precision class 0 = 0.907182
+precision class 1 = 0.811277
+recall class 0 = 0.987081
+recall class 1 = 0.354806
+false negative rate = 0.645194
+false positive rate = 0.012919
+positive prediction rate = 0.059192
+AUC of ROC = 0.900171
+AUC of PRC = 0.659683
+min(+P, Se) = 0.597586
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2724   62]
+ [ 298  138]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888268
+precision class 0 = 0.90139
+precision class 1 = 0.69
+recall class 0 = 0.977746
+recall class 1 = 0.316514
+false negative rate = 0.683486
+false positive rate = 0.022254
+positive prediction rate = 0.062073
+AUC of ROC = 0.855556
+AUC of PRC = 0.557438
+min(+P, Se) = 0.518349
+
+Epoch 00046: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch46.test0.28493381747866103.state
+Epoch 47/100
+ - 817s - loss: 0.2720 - val_loss: 0.2821
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12496   198]
+ [ 1253   734]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901165
+precision class 0 = 0.908866
+precision class 1 = 0.787554
+recall class 0 = 0.984402
+recall class 1 = 0.369401
+false negative rate = 0.630599
+false positive rate = 0.015598
+positive prediction rate = 0.063483
+AUC of ROC = 0.901143
+AUC of PRC = 0.660307
+min(+P, Se) = 0.597586
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2714   72]
+ [ 291  145]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887337
+precision class 0 = 0.903161
+precision class 1 = 0.668203
+recall class 0 = 0.974156
+recall class 1 = 0.332569
+false negative rate = 0.667431
+false positive rate = 0.025844
+positive prediction rate = 0.067349
+AUC of ROC = 0.856269
+AUC of PRC = 0.55551
+min(+P, Se) = 0.503417
+
+Epoch 00047: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch47.test0.2821387680077464.state
+Epoch 48/100
+ - 815s - loss: 0.2738 - val_loss: 0.2824
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12553   141]
+ [ 1339   648]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899189
+precision class 0 = 0.903614
+precision class 1 = 0.821293
+recall class 0 = 0.988892
+recall class 1 = 0.32612
+false negative rate = 0.67388
+false positive rate = 0.011108
+positive prediction rate = 0.053743
+AUC of ROC = 0.901907
+AUC of PRC = 0.66162
+min(+P, Se) = 0.598893
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2732   54]
+ [ 306  130]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888268
+precision class 0 = 0.899276
+precision class 1 = 0.706522
+recall class 0 = 0.980617
+recall class 1 = 0.298165
+false negative rate = 0.701835
+false positive rate = 0.019383
+positive prediction rate = 0.057107
+AUC of ROC = 0.858772
+AUC of PRC = 0.562531
+min(+P, Se) = 0.523918
+
+Epoch 00048: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch48.test0.28244563779480925.state
+Epoch 49/100
+ - 811s - loss: 0.2734 - val_loss: 0.2854
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12590   104]
+ [ 1428   559]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.895647
+precision class 0 = 0.898131
+precision class 1 = 0.843137
+recall class 0 = 0.991807
+recall class 1 = 0.281329
+false negative rate = 0.718671
+false positive rate = 0.008193
+positive prediction rate = 0.04516
+AUC of ROC = 0.895686
+AUC of PRC = 0.647923
+min(+P, Se) = 0.582788
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2747   39]
+ [ 327  109]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886406
+precision class 0 = 0.893624
+precision class 1 = 0.736486
+recall class 0 = 0.986001
+recall class 1 = 0.25
+false negative rate = 0.75
+false positive rate = 0.013999
+positive prediction rate = 0.045934
+AUC of ROC = 0.860957
+AUC of PRC = 0.555943
+min(+P, Se) = 0.519362
+
+Epoch 00049: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch49.test0.2853706434882442.state
+Epoch 50/100
+ - 812s - loss: 0.2693 - val_loss: 0.2846
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12566   128]
+ [ 1338   649]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.900143
+precision class 0 = 0.903769
+precision class 1 = 0.835264
+recall class 0 = 0.989917
+recall class 1 = 0.326623
+false negative rate = 0.673377
+false positive rate = 0.010084
+positive prediction rate = 0.052926
+AUC of ROC = 0.901347
+AUC of PRC = 0.665575
+min(+P, Se) = 0.594567
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2728   58]
+ [ 311  125]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885475
+precision class 0 = 0.897664
+precision class 1 = 0.68306
+recall class 0 = 0.979182
+recall class 1 = 0.286697
+false negative rate = 0.713303
+false positive rate = 0.020818
+positive prediction rate = 0.056797
+AUC of ROC = 0.861136
+AUC of PRC = 0.559504
+min(+P, Se) = 0.522936
+
+Epoch 00050: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch50.test0.28458955851143597.state
+Epoch 51/100
+ - 809s - loss: 0.2734 - val_loss: 0.2852
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12555   139]
+ [ 1318   669]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.900756
+precision class 0 = 0.904995
+precision class 1 = 0.82797
+recall class 0 = 0.98905
+recall class 1 = 0.336688
+false negative rate = 0.663312
+false positive rate = 0.01095
+positive prediction rate = 0.055037
+AUC of ROC = 0.898296
+AUC of PRC = 0.660186
+min(+P, Se) = 0.594363
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2721   65]
+ [ 306  130]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.89891
+precision class 1 = 0.666667
+recall class 0 = 0.976669
+recall class 1 = 0.298165
+false negative rate = 0.701835
+false positive rate = 0.023331
+positive prediction rate = 0.060521
+AUC of ROC = 0.8585
+AUC of PRC = 0.555837
+min(+P, Se) = 0.509174
+
+Epoch 00051: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch51.test0.28515550197743245.state
+Epoch 52/100
+ - 815s - loss: 0.2685 - val_loss: 0.2795
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12556   138]
+ [ 1299   688]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.902118
+precision class 0 = 0.906243
+precision class 1 = 0.83293
+recall class 0 = 0.989129
+recall class 1 = 0.346251
+false negative rate = 0.653749
+false positive rate = 0.010871
+positive prediction rate = 0.056263
+AUC of ROC = 0.904211
+AUC of PRC = 0.673021
+min(+P, Se) = 0.603509
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2732   54]
+ [ 303  133]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.889199
+precision class 0 = 0.900165
+precision class 1 = 0.71123
+recall class 0 = 0.980617
+recall class 1 = 0.305046
+false negative rate = 0.694954
+false positive rate = 0.019383
+positive prediction rate = 0.058038
+AUC of ROC = 0.862702
+AUC of PRC = 0.566068
+min(+P, Se) = 0.527523
+
+Epoch 00052: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch52.test0.27953050094572823.state
+Epoch 53/100
+ - 821s - loss: 0.2693 - val_loss: 0.2789
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12583   111]
+ [ 1350   637]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.900484
+precision class 0 = 0.903108
+precision class 1 = 0.851604
+recall class 0 = 0.991256
+recall class 1 = 0.320584
+false negative rate = 0.679416
+false positive rate = 0.008744
+positive prediction rate = 0.05095
+AUC of ROC = 0.906319
+AUC of PRC = 0.677476
+min(+P, Se) = 0.606137
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2742   44]
+ [ 316  120]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888268
+precision class 0 = 0.896665
+precision class 1 = 0.731707
+recall class 0 = 0.984207
+recall class 1 = 0.275229
+false negative rate = 0.724771
+false positive rate = 0.015793
+positive prediction rate = 0.0509
+AUC of ROC = 0.862449
+AUC of PRC = 0.568773
+min(+P, Se) = 0.527397
+
+Epoch 00053: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch53.test0.27886710470874143.state
+Epoch 54/100
+ - 815s - loss: 0.2702 - val_loss: 0.2830
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12525   169]
+ [ 1272   715]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901846
+precision class 0 = 0.907806
+precision class 1 = 0.808824
+recall class 0 = 0.986687
+recall class 1 = 0.359839
+false negative rate = 0.640161
+false positive rate = 0.013313
+positive prediction rate = 0.060214
+AUC of ROC = 0.900539
+AUC of PRC = 0.662626
+min(+P, Se) = 0.599699
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2712   74]
+ [ 294  142]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885785
+precision class 0 = 0.902196
+precision class 1 = 0.657407
+recall class 0 = 0.973439
+recall class 1 = 0.325688
+false negative rate = 0.674312
+false positive rate = 0.026561
+positive prediction rate = 0.067039
+AUC of ROC = 0.85938
+AUC of PRC = 0.554872
+min(+P, Se) = 0.497717
+
+Epoch 00054: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch54.test0.2829778445254454.state
+Epoch 55/100
+ - 807s - loss: 0.2704 - val_loss: 0.2854
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12539   155]
+ [ 1310   677]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.900211
+precision class 0 = 0.905408
+precision class 1 = 0.813702
+recall class 0 = 0.98779
+recall class 1 = 0.340715
+false negative rate = 0.659285
+false positive rate = 0.01221
+positive prediction rate = 0.056672
+AUC of ROC = 0.901655
+AUC of PRC = 0.66049
+min(+P, Se) = 0.600403
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2718   68]
+ [ 303  133]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.899702
+precision class 1 = 0.661692
+recall class 0 = 0.975592
+recall class 1 = 0.305046
+false negative rate = 0.694954
+false positive rate = 0.024408
+positive prediction rate = 0.062384
+AUC of ROC = 0.85765
+AUC of PRC = 0.557234
+min(+P, Se) = 0.523918
+
+Epoch 00055: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch55.test0.28541372254291986.state
+Epoch 56/100
+ - 808s - loss: 0.2678 - val_loss: 0.2835
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12545   149]
+ [ 1280   707]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.902663
+precision class 0 = 0.907414
+precision class 1 = 0.825935
+recall class 0 = 0.988262
+recall class 1 = 0.355813
+false negative rate = 0.644187
+false positive rate = 0.011738
+positive prediction rate = 0.058307
+AUC of ROC = 0.906414
+AUC of PRC = 0.672819
+min(+P, Se) = 0.602416
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2720   66]
+ [ 302  134]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885785
+precision class 0 = 0.900066
+precision class 1 = 0.67
+recall class 0 = 0.97631
+recall class 1 = 0.307339
+false negative rate = 0.692661
+false positive rate = 0.02369
+positive prediction rate = 0.062073
+AUC of ROC = 0.856341
+AUC of PRC = 0.560217
+min(+P, Se) = 0.519451
+
+Epoch 00056: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch56.test0.2835069426157917.state
+Epoch 57/100
+ - 808s - loss: 0.2696 - val_loss: 0.2846
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12569   125]
+ [ 1356   631]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899121
+precision class 0 = 0.902621
+precision class 1 = 0.834656
+recall class 0 = 0.990153
+recall class 1 = 0.317564
+false negative rate = 0.682436
+false positive rate = 0.009847
+positive prediction rate = 0.051495
+AUC of ROC = 0.903003
+AUC of PRC = 0.664526
+min(+P, Se) = 0.601409
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 314  122]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886096
+precision class 0 = 0.896948
+precision class 1 = 0.697143
+recall class 0 = 0.980976
+recall class 1 = 0.279817
+false negative rate = 0.720183
+false positive rate = 0.019024
+positive prediction rate = 0.054314
+AUC of ROC = 0.855069
+AUC of PRC = 0.55822
+min(+P, Se) = 0.52381
+
+Epoch 00057: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch57.test0.28463214213140703.state
+Epoch 58/100
+ - 813s - loss: 0.2695 - val_loss: 0.2922
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12559   135]
+ [ 1339   648]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899598
+precision class 0 = 0.903655
+precision class 1 = 0.827586
+recall class 0 = 0.989365
+recall class 1 = 0.32612
+false negative rate = 0.67388
+false positive rate = 0.010635
+positive prediction rate = 0.053334
+AUC of ROC = 0.903072
+AUC of PRC = 0.664381
+min(+P, Se) = 0.602919
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2729   57]
+ [ 308  128]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886716
+precision class 0 = 0.898584
+precision class 1 = 0.691892
+recall class 0 = 0.979541
+recall class 1 = 0.293578
+false negative rate = 0.706422
+false positive rate = 0.020459
+positive prediction rate = 0.057418
+AUC of ROC = 0.854284
+AUC of PRC = 0.556826
+min(+P, Se) = 0.527523
+
+Epoch 00058: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch58.test0.29217683026031777.state
+Epoch 59/100
+ - 827s - loss: 0.2681 - val_loss: 0.2844
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12559   135]
+ [ 1283   704]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.903413
+precision class 0 = 0.907311
+precision class 1 = 0.839094
+recall class 0 = 0.989365
+recall class 1 = 0.354303
+false negative rate = 0.645697
+false positive rate = 0.010635
+positive prediction rate = 0.057149
+AUC of ROC = 0.910701
+AUC of PRC = 0.686025
+min(+P, Se) = 0.61608
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2726   60]
+ [ 305  131]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886716
+precision class 0 = 0.899373
+precision class 1 = 0.685864
+recall class 0 = 0.978464
+recall class 1 = 0.300459
+false negative rate = 0.699541
+false positive rate = 0.021536
+positive prediction rate = 0.05928
+AUC of ROC = 0.853094
+AUC of PRC = 0.556188
+min(+P, Se) = 0.518265
+
+Epoch 00059: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch59.test0.28441813867712595.state
+Epoch 60/100
+ - 824s - loss: 0.2654 - val_loss: 0.2865
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12565   129]
+ [ 1301   686]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.902595
+precision class 0 = 0.906173
+precision class 1 = 0.841718
+recall class 0 = 0.989838
+recall class 1 = 0.345244
+false negative rate = 0.654756
+false positive rate = 0.010162
+positive prediction rate = 0.055514
+AUC of ROC = 0.905413
+AUC of PRC = 0.674622
+min(+P, Se) = 0.603422
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2725   61]
+ [ 302  134]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887337
+precision class 0 = 0.900231
+precision class 1 = 0.68718
+recall class 0 = 0.978105
+recall class 1 = 0.307339
+false negative rate = 0.692661
+false positive rate = 0.021895
+positive prediction rate = 0.060521
+AUC of ROC = 0.854463
+AUC of PRC = 0.555727
+min(+P, Se) = 0.509174
+
+Epoch 00060: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch60.test0.28645121186166944.state
+Epoch 61/100
+ - 811s - loss: 0.2707 - val_loss: 0.2901
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12539   155]
+ [ 1313   674]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.900007
+precision class 0 = 0.905212
+precision class 1 = 0.813028
+recall class 0 = 0.98779
+recall class 1 = 0.339205
+false negative rate = 0.660795
+false positive rate = 0.01221
+positive prediction rate = 0.056468
+AUC of ROC = 0.904327
+AUC of PRC = 0.668976
+min(+P, Se) = 0.608455
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2719   67]
+ [ 307  129]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883923
+precision class 0 = 0.898546
+precision class 1 = 0.658163
+recall class 0 = 0.975951
+recall class 1 = 0.295872
+false negative rate = 0.704128
+false positive rate = 0.024049
+positive prediction rate = 0.060832
+AUC of ROC = 0.853372
+AUC of PRC = 0.551751
+min(+P, Se) = 0.511468
+
+Epoch 00061: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch61.test0.29006770064257675.state
+Epoch 62/100
+ - 814s - loss: 0.2676 - val_loss: 0.2825
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12562   132]
+ [ 1318   669]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901233
+precision class 0 = 0.905043
+precision class 1 = 0.835206
+recall class 0 = 0.989601
+recall class 1 = 0.336688
+false negative rate = 0.663312
+false positive rate = 0.010399
+positive prediction rate = 0.05456
+AUC of ROC = 0.906581
+AUC of PRC = 0.676639
+min(+P, Se) = 0.612871
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 310  126]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887337
+precision class 0 = 0.898127
+precision class 1 = 0.703911
+recall class 0 = 0.980976
+recall class 1 = 0.288991
+false negative rate = 0.711009
+false positive rate = 0.019024
+positive prediction rate = 0.055556
+AUC of ROC = 0.859899
+AUC of PRC = 0.564708
+min(+P, Se) = 0.513761
+
+Epoch 00062: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch62.test0.2824797382928584.state
+Epoch 63/100
+ - 810s - loss: 0.2668 - val_loss: 0.2841
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12565   129]
+ [ 1287   700]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.903549
+precision class 0 = 0.907089
+precision class 1 = 0.844391
+recall class 0 = 0.989838
+recall class 1 = 0.35229
+false negative rate = 0.64771
+false positive rate = 0.010162
+positive prediction rate = 0.056468
+AUC of ROC = 0.908472
+AUC of PRC = 0.685361
+min(+P, Se) = 0.613179
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2723   63]
+ [ 307  129]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885164
+precision class 0 = 0.89868
+precision class 1 = 0.671875
+recall class 0 = 0.977387
+recall class 1 = 0.295872
+false negative rate = 0.704128
+false positive rate = 0.022613
+positive prediction rate = 0.05959
+AUC of ROC = 0.860381
+AUC of PRC = 0.562706
+min(+P, Se) = 0.515982
+
+Epoch 00063: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch63.test0.28407894382467186.state
+Epoch 64/100
+ - 810s - loss: 0.2687 - val_loss: 0.2866
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12556   138]
+ [ 1321   666]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.90062
+precision class 0 = 0.904806
+precision class 1 = 0.828358
+recall class 0 = 0.989129
+recall class 1 = 0.335179
+false negative rate = 0.664821
+false positive rate = 0.010871
+positive prediction rate = 0.054765
+AUC of ROC = 0.905835
+AUC of PRC = 0.671456
+min(+P, Se) = 0.609461
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2725   61]
+ [ 307  129]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885785
+precision class 0 = 0.898747
+precision class 1 = 0.678947
+recall class 0 = 0.978105
+recall class 1 = 0.295872
+false negative rate = 0.704128
+false positive rate = 0.021895
+positive prediction rate = 0.05897
+AUC of ROC = 0.855356
+AUC of PRC = 0.559683
+min(+P, Se) = 0.520642
+
+Epoch 00064: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch64.test0.2866388026007505.state
+Epoch 65/100
+ - 813s - loss: 0.2677 - val_loss: 0.2848
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12575   119]
+ [ 1334   653]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901029
+precision class 0 = 0.904091
+precision class 1 = 0.845855
+recall class 0 = 0.990626
+recall class 1 = 0.328636
+false negative rate = 0.671364
+false positive rate = 0.009375
+positive prediction rate = 0.052585
+AUC of ROC = 0.907954
+AUC of PRC = 0.680487
+min(+P, Se) = 0.614494
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 309  127]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887647
+precision class 0 = 0.898422
+precision class 1 = 0.705556
+recall class 0 = 0.980976
+recall class 1 = 0.291284
+false negative rate = 0.708716
+false positive rate = 0.019024
+positive prediction rate = 0.055866
+AUC of ROC = 0.858328
+AUC of PRC = 0.563381
+min(+P, Se) = 0.512088
+
+Epoch 00065: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch65.test0.2848494546909942.state
+Epoch 66/100
+ - 824s - loss: 0.2616 - val_loss: 0.2923
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12610    84]
+ [ 1385   602]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899939
+precision class 0 = 0.901036
+precision class 1 = 0.877551
+recall class 0 = 0.993383
+recall class 1 = 0.302969
+false negative rate = 0.697031
+false positive rate = 0.006617
+positive prediction rate = 0.046727
+AUC of ROC = 0.908426
+AUC of PRC = 0.684975
+min(+P, Se) = 0.612481
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2742   44]
+ [ 316  120]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888268
+precision class 0 = 0.896665
+precision class 1 = 0.731707
+recall class 0 = 0.984207
+recall class 1 = 0.275229
+false negative rate = 0.724771
+false positive rate = 0.015793
+positive prediction rate = 0.0509
+AUC of ROC = 0.854948
+AUC of PRC = 0.558851
+min(+P, Se) = 0.507865
+
+Epoch 00066: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch66.test0.2923158285867661.state
+Epoch 67/100
+ - 811s - loss: 0.2675 - val_loss: 0.2925
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12558   136]
+ [ 1325   662]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.900484
+precision class 0 = 0.90456
+precision class 1 = 0.829574
+recall class 0 = 0.989286
+recall class 1 = 0.333166
+false negative rate = 0.666834
+false positive rate = 0.010714
+positive prediction rate = 0.054356
+AUC of ROC = 0.909529
+AUC of PRC = 0.678947
+min(+P, Se) = 0.613488
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2727   59]
+ [ 308  128]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886096
+precision class 0 = 0.898517
+precision class 1 = 0.684492
+recall class 0 = 0.978823
+recall class 1 = 0.293578
+false negative rate = 0.706422
+false positive rate = 0.021177
+positive prediction rate = 0.058038
+AUC of ROC = 0.851799
+AUC of PRC = 0.552534
+min(+P, Se) = 0.518349
+
+Epoch 00067: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch67.test0.2924568544122871.state
+Epoch 68/100
+ - 810s - loss: 0.2669 - val_loss: 0.2897
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12582   112]
+ [ 1336   651]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901369
+precision class 0 = 0.904009
+precision class 1 = 0.853211
+recall class 0 = 0.991177
+recall class 1 = 0.32763
+false negative rate = 0.67237
+false positive rate = 0.008823
+positive prediction rate = 0.051972
+AUC of ROC = 0.912522
+AUC of PRC = 0.687781
+min(+P, Se) = 0.618017
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 313  123]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886406
+precision class 0 = 0.897242
+precision class 1 = 0.698864
+recall class 0 = 0.980976
+recall class 1 = 0.28211
+false negative rate = 0.71789
+false positive rate = 0.019024
+positive prediction rate = 0.054624
+AUC of ROC = 0.854642
+AUC of PRC = 0.558215
+min(+P, Se) = 0.522936
+
+Epoch 00068: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch68.test0.28966634142461734.state
+Epoch 69/100
+ - 808s - loss: 0.2629 - val_loss: 0.2815
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12589   105]
+ [ 1300   687]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.904298
+precision class 0 = 0.906401
+precision class 1 = 0.867424
+recall class 0 = 0.991728
+recall class 1 = 0.345747
+false negative rate = 0.654253
+false positive rate = 0.008272
+positive prediction rate = 0.053947
+AUC of ROC = 0.914706
+AUC of PRC = 0.699895
+min(+P, Se) = 0.625943
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2730   56]
+ [ 306  130]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887647
+precision class 0 = 0.899209
+precision class 1 = 0.698925
+recall class 0 = 0.9799
+recall class 1 = 0.298165
+false negative rate = 0.701835
+false positive rate = 0.020101
+positive prediction rate = 0.057728
+AUC of ROC = 0.86154
+AUC of PRC = 0.568785
+min(+P, Se) = 0.524554
+
+Epoch 00069: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch69.test0.2814629466164785.state
+Epoch 70/100
+ - 822s - loss: 0.2660 - val_loss: 0.2854
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12524   170]
+ [ 1222   765]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.905184
+precision class 0 = 0.911101
+precision class 1 = 0.818182
+recall class 0 = 0.986608
+recall class 1 = 0.385003
+false negative rate = 0.614998
+false positive rate = 0.013392
+positive prediction rate = 0.063688
+AUC of ROC = 0.909734
+AUC of PRC = 0.688216
+min(+P, Se) = 0.614379
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2712   74]
+ [ 290  146]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887027
+precision class 0 = 0.903398
+precision class 1 = 0.663636
+recall class 0 = 0.973439
+recall class 1 = 0.334862
+false negative rate = 0.665138
+false positive rate = 0.026561
+positive prediction rate = 0.068281
+AUC of ROC = 0.858642
+AUC of PRC = 0.55983
+min(+P, Se) = 0.493151
+
+Epoch 00070: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch70.test0.28542825923729653.state
+Epoch 71/100
+ - 828s - loss: 0.2626 - val_loss: 0.2844
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12584   110]
+ [ 1341   646]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901165
+precision class 0 = 0.903698
+precision class 1 = 0.854497
+recall class 0 = 0.991334
+recall class 1 = 0.325113
+false negative rate = 0.674887
+false positive rate = 0.008666
+positive prediction rate = 0.051495
+AUC of ROC = 0.909833
+AUC of PRC = 0.683729
+min(+P, Se) = 0.613488
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2730   56]
+ [ 313  123]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885475
+precision class 0 = 0.897141
+precision class 1 = 0.687151
+recall class 0 = 0.9799
+recall class 1 = 0.28211
+false negative rate = 0.71789
+false positive rate = 0.020101
+positive prediction rate = 0.055556
+AUC of ROC = 0.856843
+AUC of PRC = 0.562264
+min(+P, Se) = 0.510112
+
+Epoch 00071: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch71.test0.2843573987252737.state
+Epoch 72/100
+ - 823s - loss: 0.2639 - val_loss: 0.2904
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12562   132]
+ [ 1346   641]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899326
+precision class 0 = 0.903221
+precision class 1 = 0.829237
+recall class 0 = 0.989601
+recall class 1 = 0.322597
+false negative rate = 0.677403
+false positive rate = 0.010399
+positive prediction rate = 0.052653
+AUC of ROC = 0.908115
+AUC of PRC = 0.669035
+min(+P, Se) = 0.605634
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2732   54]
+ [ 317  119]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.896031
+precision class 1 = 0.687861
+recall class 0 = 0.980617
+recall class 1 = 0.272936
+false negative rate = 0.727064
+false positive rate = 0.019383
+positive prediction rate = 0.053693
+AUC of ROC = 0.856511
+AUC of PRC = 0.551933
+min(+P, Se) = 0.521542
+
+Epoch 00072: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch72.test0.29036113917873857.state
+Epoch 73/100
+ - 812s - loss: 0.2649 - val_loss: 0.2901
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12581   113]
+ [ 1366   621]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.899258
+precision class 0 = 0.902058
+precision class 1 = 0.846049
+recall class 0 = 0.991098
+recall class 1 = 0.312531
+false negative rate = 0.687469
+false positive rate = 0.008902
+positive prediction rate = 0.049997
+AUC of ROC = 0.906989
+AUC of PRC = 0.672674
+min(+P, Se) = 0.603422
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2735   51]
+ [ 323  113]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883923
+precision class 0 = 0.894375
+precision class 1 = 0.689024
+recall class 0 = 0.981694
+recall class 1 = 0.259174
+false negative rate = 0.740826
+false positive rate = 0.018306
+positive prediction rate = 0.0509
+AUC of ROC = 0.857895
+AUC of PRC = 0.553363
+min(+P, Se) = 0.511468
+
+Epoch 00073: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch73.test0.29013575529558255.state
+Epoch 74/100
+ - 814s - loss: 0.2625 - val_loss: 0.2850
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12577   117]
+ [ 1336   651]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901029
+precision class 0 = 0.903975
+precision class 1 = 0.847656
+recall class 0 = 0.990783
+recall class 1 = 0.32763
+false negative rate = 0.67237
+false positive rate = 0.009217
+positive prediction rate = 0.052313
+AUC of ROC = 0.91119
+AUC of PRC = 0.686455
+min(+P, Se) = 0.614379
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2731   55]
+ [ 318  118]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884233
+precision class 0 = 0.895703
+precision class 1 = 0.682081
+recall class 0 = 0.980258
+recall class 1 = 0.270642
+false negative rate = 0.729358
+false positive rate = 0.019742
+positive prediction rate = 0.053693
+AUC of ROC = 0.858021
+AUC of PRC = 0.557749
+min(+P, Se) = 0.509174
+
+Epoch 00074: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch74.test0.2849889201713896.state
+Epoch 75/100
+ - 820s - loss: 0.2605 - val_loss: 0.2823
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12573   121]
+ [ 1281   706]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.904502
+precision class 0 = 0.907536
+precision class 1 = 0.853688
+recall class 0 = 0.990468
+recall class 1 = 0.35531
+false negative rate = 0.644691
+false positive rate = 0.009532
+positive prediction rate = 0.056331
+AUC of ROC = 0.91513
+AUC of PRC = 0.701378
+min(+P, Se) = 0.627579
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2728   58]
+ [ 309  127]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886096
+precision class 0 = 0.898255
+precision class 1 = 0.686486
+recall class 0 = 0.979182
+recall class 1 = 0.291284
+false negative rate = 0.708716
+false positive rate = 0.020818
+positive prediction rate = 0.057418
+AUC of ROC = 0.860235
+AUC of PRC = 0.561249
+min(+P, Se) = 0.530752
+
+Epoch 00075: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch75.test0.28233364775018394.state
+Epoch 76/100
+ - 819s - loss: 0.2619 - val_loss: 0.2902
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12585   109]
+ [ 1279   708]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.905456
+precision class 0 = 0.907747
+precision class 1 = 0.866585
+recall class 0 = 0.991413
+recall class 1 = 0.356316
+false negative rate = 0.643684
+false positive rate = 0.008587
+positive prediction rate = 0.05565
+AUC of ROC = 0.915079
+AUC of PRC = 0.703011
+min(+P, Se) = 0.627954
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2737   49]
+ [ 312  124]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887958
+precision class 0 = 0.897671
+precision class 1 = 0.716763
+recall class 0 = 0.982412
+recall class 1 = 0.284404
+false negative rate = 0.715596
+false positive rate = 0.017588
+positive prediction rate = 0.053693
+AUC of ROC = 0.85811
+AUC of PRC = 0.562815
+min(+P, Se) = 0.524027
+
+Epoch 00076: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch76.test0.29020654198538437.state
+Epoch 77/100
+ - 826s - loss: 0.2658 - val_loss: 0.2940
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12606    88]
+ [ 1387   600]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.89953
+precision class 0 = 0.900879
+precision class 1 = 0.872093
+recall class 0 = 0.993068
+recall class 1 = 0.301963
+false negative rate = 0.698037
+false positive rate = 0.006932
+positive prediction rate = 0.046863
+AUC of ROC = 0.911146
+AUC of PRC = 0.684639
+min(+P, Se) = 0.608149
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2743   43]
+ [ 331  105]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883923
+precision class 0 = 0.892323
+precision class 1 = 0.709459
+recall class 0 = 0.984566
+recall class 1 = 0.240826
+false negative rate = 0.759174
+false positive rate = 0.015434
+positive prediction rate = 0.045934
+AUC of ROC = 0.852827
+AUC of PRC = 0.543931
+min(+P, Se) = 0.520548
+
+Epoch 00077: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch77.test0.2940165987070638.state
+Epoch 78/100
+ - 831s - loss: 0.2616 - val_loss: 0.2863
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12558   136]
+ [ 1251   736]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.905524
+precision class 0 = 0.909407
+precision class 1 = 0.844037
+recall class 0 = 0.989286
+recall class 1 = 0.370408
+false negative rate = 0.629592
+false positive rate = 0.010714
+positive prediction rate = 0.059396
+AUC of ROC = 0.914775
+AUC of PRC = 0.700793
+min(+P, Se) = 0.62456
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2725   61]
+ [ 307  129]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885785
+precision class 0 = 0.898747
+precision class 1 = 0.678947
+recall class 0 = 0.978105
+recall class 1 = 0.295872
+false negative rate = 0.704128
+false positive rate = 0.021895
+positive prediction rate = 0.05897
+AUC of ROC = 0.854383
+AUC of PRC = 0.559098
+min(+P, Se) = 0.520548
+
+Epoch 00078: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch78.test0.2862525664219051.state
+Epoch 79/100
+ - 820s - loss: 0.2621 - val_loss: 0.2862
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12565   129]
+ [ 1253   734]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.905865
+precision class 0 = 0.909321
+precision class 1 = 0.850521
+recall class 0 = 0.989838
+recall class 1 = 0.369401
+false negative rate = 0.630599
+false positive rate = 0.010162
+positive prediction rate = 0.058783
+AUC of ROC = 0.91195
+AUC of PRC = 0.693611
+min(+P, Se) = 0.612871
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2729   57]
+ [ 305  131]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887647
+precision class 0 = 0.899473
+precision class 1 = 0.696809
+recall class 0 = 0.979541
+recall class 1 = 0.300459
+false negative rate = 0.699541
+false positive rate = 0.020459
+positive prediction rate = 0.058349
+AUC of ROC = 0.853448
+AUC of PRC = 0.557193
+min(+P, Se) = 0.506881
+
+Epoch 00079: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch79.test0.2862202133555578.state
+Epoch 80/100
+ - 813s - loss: 0.2605 - val_loss: 0.2846
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12573   121]
+ [ 1259   728]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.906001
+precision class 0 = 0.908979
+precision class 1 = 0.857479
+recall class 0 = 0.990468
+recall class 1 = 0.366381
+false negative rate = 0.633619
+false positive rate = 0.009532
+positive prediction rate = 0.05783
+AUC of ROC = 0.915522
+AUC of PRC = 0.700932
+min(+P, Se) = 0.623553
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2730   56]
+ [ 303  133]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888579
+precision class 0 = 0.900099
+precision class 1 = 0.703704
+recall class 0 = 0.9799
+recall class 1 = 0.305046
+false negative rate = 0.694954
+false positive rate = 0.020101
+positive prediction rate = 0.058659
+AUC of ROC = 0.856222
+AUC of PRC = 0.559941
+min(+P, Se) = 0.517007
+
+Epoch 00080: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch80.test0.2845682120661718.state
+Epoch 81/100
+ - 819s - loss: 0.2621 - val_loss: 0.2845
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12577   117]
+ [ 1267   720]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.905729
+precision class 0 = 0.90848
+precision class 1 = 0.860215
+recall class 0 = 0.990783
+recall class 1 = 0.362355
+false negative rate = 0.637645
+false positive rate = 0.009217
+positive prediction rate = 0.057012
+AUC of ROC = 0.917011
+AUC of PRC = 0.708996
+min(+P, Se) = 0.632612
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 314  122]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886096
+precision class 0 = 0.896948
+precision class 1 = 0.697143
+recall class 0 = 0.980976
+recall class 1 = 0.279817
+false negative rate = 0.720183
+false positive rate = 0.019024
+positive prediction rate = 0.054314
+AUC of ROC = 0.856608
+AUC of PRC = 0.559974
+min(+P, Se) = 0.530892
+
+Epoch 00081: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch81.test0.2845138667751402.state
+Epoch 82/100
+ - 815s - loss: 0.2621 - val_loss: 0.2873
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12583   111]
+ [ 1264   723]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.906342
+precision class 0 = 0.908717
+precision class 1 = 0.866906
+recall class 0 = 0.991256
+recall class 1 = 0.363865
+false negative rate = 0.636135
+false positive rate = 0.008744
+positive prediction rate = 0.056808
+AUC of ROC = 0.920335
+AUC of PRC = 0.715242
+min(+P, Se) = 0.640664
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2731   55]
+ [ 315  121]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885164
+precision class 0 = 0.896586
+precision class 1 = 0.6875
+recall class 0 = 0.980258
+recall class 1 = 0.277523
+false negative rate = 0.722477
+false positive rate = 0.019742
+positive prediction rate = 0.054624
+AUC of ROC = 0.855174
+AUC of PRC = 0.554446
+min(+P, Se) = 0.527523
+
+Epoch 00082: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch82.test0.28731713948793325.state
+Epoch 83/100
+ - 828s - loss: 0.2565 - val_loss: 0.2990
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12588   106]
+ [ 1343   644]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.901301
+precision class 0 = 0.903596
+precision class 1 = 0.858667
+recall class 0 = 0.99165
+recall class 1 = 0.324107
+false negative rate = 0.675893
+false positive rate = 0.00835
+positive prediction rate = 0.051086
+AUC of ROC = 0.913241
+AUC of PRC = 0.690961
+min(+P, Se) = 0.61852
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2737   49]
+ [ 320  116]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885475
+precision class 0 = 0.895322
+precision class 1 = 0.70303
+recall class 0 = 0.982412
+recall class 1 = 0.266055
+false negative rate = 0.733945
+false positive rate = 0.017588
+positive prediction rate = 0.05121
+AUC of ROC = 0.856527
+AUC of PRC = 0.559041
+min(+P, Se) = 0.534404
+
+Epoch 00083: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch83.test0.2990113749121987.state
+Epoch 84/100
+ - 822s - loss: 0.2606 - val_loss: 0.2853
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12586   108]
+ [ 1243   744]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.907976
+precision class 0 = 0.910116
+precision class 1 = 0.873239
+recall class 0 = 0.991492
+recall class 1 = 0.374434
+false negative rate = 0.625566
+false positive rate = 0.008508
+positive prediction rate = 0.058034
+AUC of ROC = 0.915861
+AUC of PRC = 0.710841
+min(+P, Se) = 0.636866
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2730   56]
+ [ 310  126]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.886406
+precision class 0 = 0.898026
+precision class 1 = 0.692308
+recall class 0 = 0.9799
+recall class 1 = 0.288991
+false negative rate = 0.711009
+false positive rate = 0.020101
+positive prediction rate = 0.056487
+AUC of ROC = 0.859989
+AUC of PRC = 0.564462
+min(+P, Se) = 0.518349
+
+Epoch 00084: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch84.test0.2853475038926473.state
+Epoch 85/100
+ - 835s - loss: 0.2548 - val_loss: 0.2992
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12614    80]
+ [ 1332   655]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.903821
+precision class 0 = 0.904489
+precision class 1 = 0.891156
+recall class 0 = 0.993698
+recall class 1 = 0.329643
+false negative rate = 0.670357
+false positive rate = 0.006302
+positive prediction rate = 0.050065
+AUC of ROC = 0.917075
+AUC of PRC = 0.713641
+min(+P, Se) = 0.631791
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2743   43]
+ [ 336  100]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882371
+precision class 0 = 0.890874
+precision class 1 = 0.699301
+recall class 0 = 0.984566
+recall class 1 = 0.229358
+false negative rate = 0.770642
+false positive rate = 0.015434
+positive prediction rate = 0.044382
+AUC of ROC = 0.854085
+AUC of PRC = 0.553202
+min(+P, Se) = 0.521348
+
+Epoch 00085: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch85.test0.2991854540407103.state
+Epoch 86/100
+ - 830s - loss: 0.2571 - val_loss: 0.2855
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12563   131]
+ [ 1232   755]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.907159
+precision class 0 = 0.910692
+precision class 1 = 0.852144
+recall class 0 = 0.98968
+recall class 1 = 0.37997
+false negative rate = 0.62003
+false positive rate = 0.01032
+positive prediction rate = 0.06035
+AUC of ROC = 0.919921
+AUC of PRC = 0.710931
+min(+P, Se) = 0.634625
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2720   66]
+ [ 304  132]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885164
+precision class 0 = 0.899471
+precision class 1 = 0.666667
+recall class 0 = 0.97631
+recall class 1 = 0.302752
+false negative rate = 0.697248
+false positive rate = 0.02369
+positive prediction rate = 0.061453
+AUC of ROC = 0.854405
+AUC of PRC = 0.552389
+min(+P, Se) = 0.512586
+
+Epoch 00086: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch86.test0.28552291932394974.state
+Epoch 87/100
+ - 820s - loss: 0.2572 - val_loss: 0.2942
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12584   110]
+ [ 1261   726]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.906614
+precision class 0 = 0.90892
+precision class 1 = 0.868421
+recall class 0 = 0.991334
+recall class 1 = 0.365375
+false negative rate = 0.634625
+false positive rate = 0.008666
+positive prediction rate = 0.056944
+AUC of ROC = 0.91702
+AUC of PRC = 0.712945
+min(+P, Se) = 0.638148
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2728   58]
+ [ 312  124]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885164
+precision class 0 = 0.897368
+precision class 1 = 0.681319
+recall class 0 = 0.979182
+recall class 1 = 0.284404
+false negative rate = 0.715596
+false positive rate = 0.020818
+positive prediction rate = 0.056487
+AUC of ROC = 0.856305
+AUC of PRC = 0.557012
+min(+P, Se) = 0.522936
+
+Epoch 00087: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch87.test0.2942323520106699.state
+Epoch 88/100
+ - 816s - loss: 0.2566 - val_loss: 0.2879
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12596    98]
+ [ 1269   718]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.906886
+precision class 0 = 0.908475
+precision class 1 = 0.879902
+recall class 0 = 0.99228
+recall class 1 = 0.361349
+false negative rate = 0.638651
+false positive rate = 0.00772
+positive prediction rate = 0.055582
+AUC of ROC = 0.921019
+AUC of PRC = 0.719366
+min(+P, Se) = 0.641103
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2734   52]
+ [ 320  116]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884544
+precision class 0 = 0.895219
+precision class 1 = 0.690476
+recall class 0 = 0.981335
+recall class 1 = 0.266055
+false negative rate = 0.733945
+false positive rate = 0.018665
+positive prediction rate = 0.052142
+AUC of ROC = 0.856695
+AUC of PRC = 0.560753
+min(+P, Se) = 0.522936
+
+Epoch 00088: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch88.test0.2878849280513661.state
+Epoch 89/100
+ - 828s - loss: 0.2562 - val_loss: 0.2863
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12591   103]
+ [ 1244   743]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.908249
+precision class 0 = 0.910083
+precision class 1 = 0.878251
+recall class 0 = 0.991886
+recall class 1 = 0.373931
+false negative rate = 0.626069
+false positive rate = 0.008114
+positive prediction rate = 0.057626
+AUC of ROC = 0.920233
+AUC of PRC = 0.717029
+min(+P, Se) = 0.634905
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2733   53]
+ [ 311  125]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887027
+precision class 0 = 0.897832
+precision class 1 = 0.702247
+recall class 0 = 0.980976
+recall class 1 = 0.286697
+false negative rate = 0.713303
+false positive rate = 0.019024
+positive prediction rate = 0.055245
+AUC of ROC = 0.854455
+AUC of PRC = 0.562237
+min(+P, Se) = 0.511468
+
+Epoch 00089: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch89.test0.28628894577553227.state
+Epoch 90/100
+ - 828s - loss: 0.2571 - val_loss: 0.2914
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12586   108]
+ [ 1272   715]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.906001
+precision class 0 = 0.908212
+precision class 1 = 0.868773
+recall class 0 = 0.991492
+recall class 1 = 0.359839
+false negative rate = 0.640161
+false positive rate = 0.008508
+positive prediction rate = 0.056059
+AUC of ROC = 0.91851
+AUC of PRC = 0.709376
+min(+P, Se) = 0.632663
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2730   56]
+ [ 317  119]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884233
+precision class 0 = 0.895963
+precision class 1 = 0.68
+recall class 0 = 0.9799
+recall class 1 = 0.272936
+false negative rate = 0.727064
+false positive rate = 0.020101
+positive prediction rate = 0.054314
+AUC of ROC = 0.858348
+AUC of PRC = 0.558352
+min(+P, Se) = 0.511468
+
+Epoch 00090: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch90.test0.2913802991604431.state
+Epoch 91/100
+ - 822s - loss: 0.2606 - val_loss: 0.2942
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12599    95]
+ [ 1311   676]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.90423
+precision class 0 = 0.905751
+precision class 1 = 0.876783
+recall class 0 = 0.992516
+recall class 1 = 0.340211
+false negative rate = 0.659789
+false positive rate = 0.007484
+positive prediction rate = 0.052517
+AUC of ROC = 0.916172
+AUC of PRC = 0.703527
+min(+P, Se) = 0.630468
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2739   47]
+ [ 321  115]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.885785
+precision class 0 = 0.895098
+precision class 1 = 0.709877
+recall class 0 = 0.98313
+recall class 1 = 0.263761
+false negative rate = 0.736239
+false positive rate = 0.01687
+positive prediction rate = 0.050279
+AUC of ROC = 0.858245
+AUC of PRC = 0.559572
+min(+P, Se) = 0.516055
+
+Epoch 00091: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch91.test0.2942130542912334.state
+Epoch 92/100
+ - 817s - loss: 0.2580 - val_loss: 0.2882
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12624    70]
+ [ 1340   647]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.903957
+precision class 0 = 0.904039
+precision class 1 = 0.902371
+recall class 0 = 0.994486
+recall class 1 = 0.325617
+false negative rate = 0.674384
+false positive rate = 0.005514
+positive prediction rate = 0.048839
+AUC of ROC = 0.918335
+AUC of PRC = 0.712429
+min(+P, Se) = 0.636501
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2751   35]
+ [ 327  109]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887647
+precision class 0 = 0.893762
+precision class 1 = 0.756944
+recall class 0 = 0.987437
+recall class 1 = 0.25
+false negative rate = 0.75
+false positive rate = 0.012563
+positive prediction rate = 0.044693
+AUC of ROC = 0.855225
+AUC of PRC = 0.558307
+min(+P, Se) = 0.506818
+
+Epoch 00092: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch92.test0.2882333449108271.state
+Epoch 93/100
+ - 818s - loss: 0.2578 - val_loss: 0.2928
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12624    70]
+ [ 1333   654]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.904434
+precision class 0 = 0.904492
+precision class 1 = 0.903315
+recall class 0 = 0.994486
+recall class 1 = 0.329139
+false negative rate = 0.670861
+false positive rate = 0.005514
+positive prediction rate = 0.049315
+AUC of ROC = 0.918525
+AUC of PRC = 0.716437
+min(+P, Se) = 0.635128
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2744   42]
+ [ 334  102]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883302
+precision class 0 = 0.891488
+precision class 1 = 0.708333
+recall class 0 = 0.984925
+recall class 1 = 0.233945
+false negative rate = 0.766055
+false positive rate = 0.015075
+positive prediction rate = 0.044693
+AUC of ROC = 0.856293
+AUC of PRC = 0.557513
+min(+P, Se) = 0.514874
+
+Epoch 00093: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch93.test0.2928388930607441.state
+Epoch 94/100
+ - 811s - loss: 0.2580 - val_loss: 0.2908
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12577   117]
+ [ 1256   731]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.906478
+precision class 0 = 0.909203
+precision class 1 = 0.862028
+recall class 0 = 0.990783
+recall class 1 = 0.367891
+false negative rate = 0.632109
+false positive rate = 0.009217
+positive prediction rate = 0.057762
+AUC of ROC = 0.918546
+AUC of PRC = 0.709218
+min(+P, Se) = 0.629779
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2724   62]
+ [ 317  119]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.882371
+precision class 0 = 0.895758
+precision class 1 = 0.657459
+recall class 0 = 0.977746
+recall class 1 = 0.272936
+false negative rate = 0.727064
+false positive rate = 0.022254
+positive prediction rate = 0.056176
+AUC of ROC = 0.854742
+AUC of PRC = 0.556881
+min(+P, Se) = 0.514739
+
+Epoch 00094: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch94.test0.29082300587286125.state
+Epoch 95/100
+ - 812s - loss: 0.2548 - val_loss: 0.2922
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12591   103]
+ [ 1264   723]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.906886
+precision class 0 = 0.908769
+precision class 1 = 0.875303
+recall class 0 = 0.991886
+recall class 1 = 0.363865
+false negative rate = 0.636135
+false positive rate = 0.008114
+positive prediction rate = 0.056263
+AUC of ROC = 0.920278
+AUC of PRC = 0.717566
+min(+P, Se) = 0.636683
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2732   54]
+ [ 317  119]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.896031
+precision class 1 = 0.687861
+recall class 0 = 0.980617
+recall class 1 = 0.272936
+false negative rate = 0.727064
+false positive rate = 0.019383
+positive prediction rate = 0.053693
+AUC of ROC = 0.852892
+AUC of PRC = 0.547345
+min(+P, Se) = 0.508889
+
+Epoch 00095: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch95.test0.2922346567229815.state
+Epoch 96/100
+ - 824s - loss: 0.2594 - val_loss: 0.2861
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12610    84]
+ [ 1271   716]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.907704
+precision class 0 = 0.908436
+precision class 1 = 0.895
+recall class 0 = 0.993383
+recall class 1 = 0.360342
+false negative rate = 0.639658
+false positive rate = 0.006617
+positive prediction rate = 0.054492
+AUC of ROC = 0.924641
+AUC of PRC = 0.730383
+min(+P, Se) = 0.648213
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2732   54]
+ [ 321  115]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.883613
+precision class 0 = 0.894858
+precision class 1 = 0.680473
+recall class 0 = 0.980617
+recall class 1 = 0.263761
+false negative rate = 0.736239
+false positive rate = 0.019383
+positive prediction rate = 0.052452
+AUC of ROC = 0.85822
+AUC of PRC = 0.560195
+min(+P, Se) = 0.520642
+
+Epoch 00096: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch96.test0.286130503374993.state
+Epoch 97/100
+ - 821s - loss: 0.2584 - val_loss: 0.2840
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12586   108]
+ [ 1248   739]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.907636
+precision class 0 = 0.909787
+precision class 1 = 0.872491
+recall class 0 = 0.991492
+recall class 1 = 0.371917
+false negative rate = 0.628083
+false positive rate = 0.008508
+positive prediction rate = 0.057694
+AUC of ROC = 0.923177
+AUC of PRC = 0.719094
+min(+P, Se) = 0.637141
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2727   59]
+ [ 303  133]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.887647
+precision class 0 = 0.9
+precision class 1 = 0.692708
+recall class 0 = 0.978823
+recall class 1 = 0.305046
+false negative rate = 0.694954
+false positive rate = 0.021177
+positive prediction rate = 0.05959
+AUC of ROC = 0.85684
+AUC of PRC = 0.564585
+min(+P, Se) = 0.520642
+
+Epoch 00097: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch97.test0.2840233846231694.state
+Epoch 98/100
+ - 813s - loss: 0.2549 - val_loss: 0.2980
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12577   117]
+ [ 1277   710]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.905047
+precision class 0 = 0.907824
+precision class 1 = 0.858525
+recall class 0 = 0.990783
+recall class 1 = 0.357323
+false negative rate = 0.642677
+false positive rate = 0.009217
+positive prediction rate = 0.056331
+AUC of ROC = 0.917162
+AUC of PRC = 0.706939
+min(+P, Se) = 0.629592
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2731   55]
+ [ 303  133]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.888889
+precision class 0 = 0.900132
+precision class 1 = 0.707447
+recall class 0 = 0.980258
+recall class 1 = 0.305046
+false negative rate = 0.694954
+false positive rate = 0.019742
+positive prediction rate = 0.058349
+AUC of ROC = 0.854169
+AUC of PRC = 0.556091
+min(+P, Se) = 0.506881
+
+Epoch 00098: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch98.test0.2980429644365162.state
+Epoch 99/100
+ - 810s - loss: 0.2555 - val_loss: 0.2899
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12596    98]
+ [ 1224   763]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.909952
+precision class 0 = 0.911433
+precision class 1 = 0.886179
+recall class 0 = 0.99228
+recall class 1 = 0.383996
+false negative rate = 0.616004
+false positive rate = 0.00772
+positive prediction rate = 0.058647
+AUC of ROC = 0.924461
+AUC of PRC = 0.729802
+min(+P, Se) = 0.649598
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2729   57]
+ [ 293  143]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.891372
+precision class 0 = 0.903044
+precision class 1 = 0.715
+recall class 0 = 0.979541
+recall class 1 = 0.327982
+false negative rate = 0.672018
+false positive rate = 0.020459
+positive prediction rate = 0.062073
+AUC of ROC = 0.855909
+AUC of PRC = 0.563522
+min(+P, Se) = 0.525229
+
+Epoch 00099: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch99.test0.28994952540666624.state
+Epoch 100/100
+ - 823s - loss: 0.2550 - val_loss: 0.2950
+
+==>predicting on train
+
+
+
+-------------------------------
+
+confusion matrix:
+[[12634    60]
+ [ 1347   640]]
+prevalence of IHM = 0.135345
+number samples = 14681
+accuracy = 0.904162
+precision class 0 = 0.903655
+precision class 1 = 0.914286
+recall class 0 = 0.995273
+recall class 1 = 0.322094
+false negative rate = 0.677906
+false positive rate = 0.004727
+positive prediction rate = 0.047681
+AUC of ROC = 0.924182
+AUC of PRC = 0.725256
+min(+P, Se) = 0.6462
+
+==>predicting on validation
+
+
+
+-------------------------------
+
+confusion matrix:
+[[2746   40]
+ [ 331  105]]
+prevalence of IHM = 0.13532
+number samples = 3222
+accuracy = 0.884854
+precision class 0 = 0.892428
+precision class 1 = 0.724138
+recall class 0 = 0.985642
+recall class 1 = 0.240826
+false negative rate = 0.759174
+false positive rate = 0.014358
+positive prediction rate = 0.045003
+AUC of ROC = 0.855383
+AUC of PRC = 0.561712
+min(+P, Se) = 0.527523
+
+Epoch 00100: saving model to mimic3models/in_hospital_mortality/keras_states/2020-04-08_15-25_/2020-04-08_15-25_k_channel_wise_lstms_aug.n8.szc4.0.d0.3.dep1.bs8.ts1.0.epoch100.test0.2950487146113579.state

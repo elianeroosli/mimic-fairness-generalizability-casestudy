@@ -1,0 +1,19 @@
+TRAINING THE CHANNEL-WISE LSTM without additional data
+/share/pi/boussard/eroosli_work/benchmarking/mimic3models/in_hospital_mortality/main.py:7: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp
+Using TensorFlow backend.
+2020-05-06 10:06:47.960433: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer.so.6'; dlerror: libnvinfer.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /share/sw/open/oracle/18.5.0.0/lib/:
+2020-05-06 10:06:47.966831: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer_plugin.so.6'; dlerror: libnvinfer_plugin.so.6: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /share/sw/open/oracle/18.5.0.0/lib/:
+2020-05-06 10:06:47.966849: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:30] Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+Traceback (most recent call last):
+  File "/share/pi/boussard/envs/eroosli_env/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/share/pi/boussard/envs/eroosli_env/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/share/pi/boussard/eroosli_work/benchmarking/mimic3models/in_hospital_mortality/main.py", line 42, in <module>
+    period_length=48.0)
+  File "/share/pi/boussard/eroosli_work/benchmarking/mimic3benchmark/readers.py", line 51, in __init__
+    Reader.__init__(self, dataset_dir, listfile)
+  File "/share/pi/boussard/eroosli_work/benchmarking/mimic3benchmark/readers.py", line 17, in __init__
+    with open(listfile_path, "r") as lfile:
+FileNotFoundError: [Errno 2] No such file or directory: 'data/aug/full_aug/mortality/train_listfile.csv'

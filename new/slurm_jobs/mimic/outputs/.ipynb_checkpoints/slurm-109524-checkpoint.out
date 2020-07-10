@@ -1,0 +1,11 @@
+TRAINING THE CHANNEL-WISE LSTM without additional data
+Traceback (most recent call last):
+  File "/share/sw/open/anaconda/3/lib/python3.6/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/share/sw/open/anaconda/3/lib/python3.6/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/share/pi/boussard/eroosli_work/benchmarking/mimic3models/in_hospital_mortality/main_aug.py", line 14, in <module>
+    from mimic3models import metrics, keras_utils, common_utils 
+  File "/share/pi/boussard/eroosli_work/benchmarking/mimic3models/keras_utils.py", line 9, in <module>
+    import keras
+ModuleNotFoundError: No module named 'keras'
