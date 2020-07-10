@@ -28,7 +28,7 @@ in the `sql/params.json` file to create a successful connection.
 The file `fetch_data.py` builds the STAYS, LABS and VITALS table from the SQL queries
 in the `sql` folder and loads them into Nero as `.tsv` files.
 
-The tables are build using the same exclusion criteria as detailed in the `mimic`
+The tables are built using the same exclusion criteria as detailed in the `mimic`
 processing flow. The tables contain the following information:
 
 *STAYS:*
