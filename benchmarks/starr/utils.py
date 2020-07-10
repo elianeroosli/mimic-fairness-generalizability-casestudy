@@ -1,27 +1,39 @@
+# +-------------------------------------------------------------------------------------------------+
+# | utils.py: helper functions for scripts                                                          |
+# |                                                                                                 |
+# | Eliane Röösli (2020)                                                                            |
+# +-------------------------------------------------------------------------------------------------+
+
 import pandas as pd
 import os
 
 def create_listfile(data_path, stays):
-    header = "stay,y_true"
-    header_empty = "stay,y_true,hosp_in,hosp_out"
-    with open(os.path.join(data_path, 'listfile.csv'), 'w') as listfile, open(os.path.join(data_path, 'emptylistfile.csv'), 'w') as emptylistfile:
+    header = "stay,y_true,comorb_90,comorb_180"
+    with open(os.path.join(data_path, 'listfile.csv'), 'w') as listfile, open(os.path.join(data_path, 'emptylistfile.csv'), 'w') as empty_listfile:
         # initialize listfiles
         listfile.write(header)
-        emptylistfile.write(header_empty)
+        empty_listfile.write(header)
         
         for idx, stay in stays.iterrows():
             # stay info
             pat_deid = stay['pat_deid']
             stay_id = stay['stay_id']
             ihm = stay['ihm']
-            hosp_in = stay['hosp_in']
-            hosp_out = stay['hosp_out']
+            comorb1 = stay['comorb1']
+            comorb2 = stay['comorb2']
             filename = str(pat_deid) + "_episode" + str(stay_id) + "_timeseries.csv"
             
             # load csv file and check if it's empty or not
-            df = pd.read_csv(os.path.join(data_path, filename))
-            if df.empty:
-                data = ",".join([filename, str(ihm), hosp_in, hosp_out])
-                emptylistfile.write("\n" + data)
+            path = os.path.join(data_path, filename)
+            if os.path.exists(path):
+                listfile.write("\n" + filename + "," + str(ihm) + "," + str(comorb1) + "," + str(comorb2))
             else:
-                listfile.write("\n" + filename + "," + str(ihm))
+                empty_listfile.write("\n" + filename + "," + str(ihm) + "," + str(comorb1) + "," + str(comorb2))
+
+def add_listfiles(path):
+    for partition in ['train', 'test']:
+        csv_list = os.listdir(os.path.join(path, partition))
+        csv_list = [file for file in csv_list if file.endswith(".csv")]
+        total_stays = pd.read_csv(os.path.join(path, 'listfile.csv'))
+        to_keep = [True if stay_csv in csv_list else False for stay_csv in total_stays['stay']]
+        total_stays[to_keep].to_csv(os.path.join(path, partition, 'listfile.csv'), index=False)        

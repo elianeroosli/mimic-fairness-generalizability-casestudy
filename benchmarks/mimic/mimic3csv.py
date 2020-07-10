@@ -1,10 +1,13 @@
-from __future__ import absolute_import
-from __future__ import print_function
+# +-------------------------------------------------------------------------------------------------+
+# | mimic3csv.py: read and process (filter, break up) mimic csv tables                              |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
 
-import csv
+import pandas as pd
 import numpy as np
 import os
-import pandas as pd
+import csv
 import sys
 
 from benchmarks.mimic.util import *

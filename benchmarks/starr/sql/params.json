@@ -13,7 +13,6 @@
 	},
     "load_sql": {
         "stays": "SELECT * FROM er_icu_stays",
-        "stays_hw" : "SELECT * FROM er_icu_stays_hw",
         "labs": "SELECT * FROM er_icu_labs",
         "vitals": "SELECT * FROM er_icu_vitals"
     },

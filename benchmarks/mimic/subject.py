@@ -1,5 +1,8 @@
-from __future__ import absolute_import
-from __future__ import print_function
+# +-------------------------------------------------------------------------------------------------+
+# | subject.py: data reading and processing functions for individual subjects                       |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
 
 import numpy as np
 import os

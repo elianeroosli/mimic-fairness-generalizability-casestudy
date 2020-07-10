@@ -1,10 +1,12 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (c) 2019 Stanford, Jean Coquet
-# modified by Eliane Röösli, 2020
+# +-------------------------------------------------------------------------------------------------+
+# | oracle_utils.py: link from Oracle database to nero                                              |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Jean Coquet (2019, Stanford)                                 |
+# +-------------------------------------------------------------------------------------------------+
 
 from sqlalchemy import create_engine
 import getpass, re
+
 
 # build connection to oracle database
 def get_connection(params):

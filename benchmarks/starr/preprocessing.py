@@ -1,3 +1,9 @@
+# +-------------------------------------------------------------------------------------------------+
+# | preprocessing.py: functions to clean up stays, labs and vitals data                             |
+# |                                                                                                 |
+# | Eliane Röösli (2020)                                                                            |
+# +-------------------------------------------------------------------------------------------------+
+
 import numpy as np
 import pandas as pd
 
@@ -41,6 +47,9 @@ def clean_stays(stays, vitals, verbose=False):
         print('-'*80)
         print('CLEAN STAYS')
     
+    # clean charlson comorbidity score
+    stays = clean_charlson(stays, verbose)
+    
     # clean height and weight data from encounter table
     stays = clean_height(stays, verbose)
     stays = clean_weight(stays, verbose)
@@ -48,6 +57,18 @@ def clean_stays(stays, vitals, verbose=False):
     # complete height and weight data from vitals
     stays = add_height(stays, vitals, verbose)
     stays = add_weight(stays, vitals, verbose)
+    
+    return stays
+
+
+def clean_charlson(stays, verbose=False):
+    # prepare handling of null values: correspond in fact to 0
+    stays['comorb1'].replace("None", 0, inplace=True)
+    stays['comorb2'].replace("None", 0, inplace=True)
+    
+    # convert strings to floats
+    stays['comorb1'] = stays['comorb1'].apply(lambda g: int(g))
+    stays['comorb2'] = stays['comorb2'].apply(lambda g: int(g))
     
     return stays
 
@@ -137,8 +158,6 @@ def clean_labs(labs, verbose=False):
     # convert all values to floats (from strings)
     labs['value'] = labs['value'].apply(lambda g: float(g))
     
-    # remove nan values
-    
     return labs
 
 
@@ -171,12 +190,13 @@ def clean_vitals(vitals, verbose=False):
     # exclude None / np.nan values and height/weight data (already incorporated into stays data)
     vitals = exclude_vitals(vitals, verbose)
     
-    # clean temperature and blood pressure measurements
+    # clean temperature, blood pressure and GCS measurements
     vitals = clean_TP(vitals)
     vitals = clean_BP(vitals)
+    vitals = clean_GCS(vitals)
     
     # convert all values to floats (from strings)
-    vitals['value'] = vitals['value'].apply(lambda g: float(g))
+    vitals['value'] = vitals.apply(lambda g: float(g['value']) if g['event_id'].find('Glascow') == -1 else g['value'], axis=1)
     
     return vitals
 
@@ -250,3 +270,49 @@ def convert_BPtable(table, values, event_id):
     new_table['event_id'] = event_id
     return new_table
 
+
+
+### clean Glasgow coma scale
+
+def clean_GCS(vitals):
+    vitals['value'] = vitals.apply(lambda x: helper_GCS(x) if (x['event_id'].find("Glascow") != -1) else x['value'], axis=1)
+    return vitals
+
+
+def helper_GCS(gcs):
+    val = gcs['value']
+    if gcs['event_id'].find("verbal") != -1:
+        return GCS_verbal[str(val)]
+    elif gcs['event_id'].find("eye") != -1:
+        return GCS_eye[str(val)]
+    elif gcs['event_id'].find("motor") != -1:
+        return GCS_motor[str(val)]
+    elif gcs['event_id'].find("total") != -1:
+        return str(int(val))
+    else:
+        return np.nan
+    
+    
+GCS_verbal = {
+    '1': '1 No Response',
+    '2': '2 Incomp sounds',
+    '3': '3 Inapprop words',
+    '4': '4 Confused',
+    '5': '5 Oriented'
+}
+
+GCS_eye = {
+    '1': '1 No Response',
+    '2': '2 To pain',
+    '3': '3 To speech',
+    '4': '4 Spontaneously'
+}
+
+GCS_motor = {
+    '1': '1 No Response',
+    '2': '2 Abnorm extensn',
+    '3': '3 Abnorm flexion',
+    '4': '4 Flex-withdraws',
+    '5': '5 Localizes Pain',
+    '6': '6 Obeys Commands'
+}

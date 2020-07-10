@@ -1,6 +1,13 @@
-import pandas as pd
-import os
+# +-------------------------------------------------------------------------------------------------+
+# | tools.py: functions for STARR data analysis                                                     |
+# |                                                                                                 |
+# | Eliane Röösli (2020)                                                                            |
+# +-------------------------------------------------------------------------------------------------+
+
 from datetime import datetime
+import pandas as pd
+import numpy as np
+import os
 
 
 def nb_years(table):
@@ -25,7 +32,7 @@ def time_range(labs, stays, vitals, verbose=True):
                                                                 vitals_dates['hosp_out'].max(), nb_years(vitals_dates)))
         
         
-def analyse_listfile(data_path, verbose=True):
+def analyse_emptylistfile(data_path, verbose=True):
     # analyse data from empty listfiles
     empty_listfile = pd.read_csv(os.path.join(data_path, 'emptylistfile.csv'))
     empty_listfile.sort_values('hosp_in', inplace=True)
@@ -37,3 +44,10 @@ def analyse_listfile(data_path, verbose=True):
         print('earliest hospitalization date with no data: {}'.format(empty_listfile['hosp_in'].min()))
         print('number of empty files in 2019 and 2020: {}'.format(empty_listfile[empty_listfile['year'].apply(lambda x: x in [2019, 2020])].shape[0]))
         print('number of empty files after last vital/lab event: {}'.format(empty_listfile['after_date'].sum()))
+        
+        
+def analyse_listfile(data_path, verbose=True):
+    # analyse data from empty listfiles
+    listfile = pd.read_csv(os.path.join(data_path, 'listfile.csv'))
+    print('average IHM:', np.round(listfile['y_true'].sum()/listfile.shape[0],4))
+    

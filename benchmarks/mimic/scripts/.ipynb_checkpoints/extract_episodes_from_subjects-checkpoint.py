@@ -1,9 +1,14 @@
-import argparse
+# +-------------------------------------------------------------------------------------------------+
+# | extract_episodes_from_subjects.py: create timeseries                                            |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
 
 import os
 import sys
 import numpy as np
 import pandas as pd
+import argparse
 
 from benchmarks.mimic.subject import read_stays, read_diagnoses, read_events, get_events_for_stay, add_hours_elapsed_to_events
 from benchmarks.mimic.subject import convert_events_to_timeseries, get_first_valid_from_timeseries

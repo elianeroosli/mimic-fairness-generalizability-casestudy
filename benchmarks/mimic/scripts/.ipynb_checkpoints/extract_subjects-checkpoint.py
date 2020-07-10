@@ -1,3 +1,10 @@
+# +-------------------------------------------------------------------------------------------------+
+# | extract_subjects.py: select subjects based on exclusion criteria                                |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
+
+
 import argparse
 import yaml
 import os

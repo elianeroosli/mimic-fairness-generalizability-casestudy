@@ -1,3 +1,9 @@
+# +-------------------------------------------------------------------------------------------------+
+# | create_timeseries.py: full STARR data processing pipeline                                       |
+# |                                                                                                 |
+# | Eliane Röösli (2020)                                                                            |
+# +-------------------------------------------------------------------------------------------------+
+
 import numpy as np
 import pandas as pd
 import argparse
@@ -6,6 +12,7 @@ import json
 import sys
 import os
 
+from benchmarks.starr.utils import create_listfile
 from benchmarks.starr.preprocessing import clean_stays, clean_labs, clean_vitals, variable_list, var_map
 
     
@@ -22,7 +29,7 @@ if __name__ == "__main__":
     # load tables
     stays = pd.read_csv(params['load']['stays'], sep='\t')
     labs = pd.read_csv(params['load']['labs'], sep='\t')
-    vitals = pd.read_csv(params['load']['vitals'], sep='\t')
+    vitals = pd.read_csv(params['load']['vitals'], sep='\t', low_memory=False)
 
     # data transformation, retrieval and cleaning
     stays = clean_stays(stays, vitals, args.verbose)
@@ -37,9 +44,12 @@ if __name__ == "__main__":
     if os.path.exists(ihm_path):
         shutil.rmtree(ihm_path)
     os.makedirs(ihm_path)
-    
+      
     if args.verbose:
         print('-'*80)
+        
+    # keep track of which stays get retained
+    stays_retained = pd.Series([False]*stays.shape[0])
 
     # create individual timeseries csv file for each stay
     for idx, stay in stays.iterrows():
@@ -71,15 +81,25 @@ if __name__ == "__main__":
         timeseries['Insurance'] = stay['insurance']
 
         # add labs data to timeseries
-        for idx, lab in stay_labs.iterrows():
+        for i, lab in stay_labs.iterrows():
             timeseries.loc[timeseries['Hours'] == lab['hours'], lab['event_id']] = lab['value']
 
         # add vitals data to timeseries
-        for idx, vital in stay_vitals.iterrows():
+        for i, vital in stay_vitals.iterrows():
             timeseries.loc[timeseries['Hours'] == vital['hours'], vital['event_id']] = vital['value']
 
-        # save timeseries as csv file
-        filename = str(pat_deid) + "_episode" + str(stay_id) + "_timeseries.csv"
-        timeseries.to_csv(os.path.join(params['save']['timeseries'], filename), index=False)
+        # save timeseries as csv file if at least one data point is available
+        if timeseries.shape[0] > 0:
+            stays_retained[idx] = True
+            filename = str(pat_deid) + "_episode" + str(stay_id) + "_timeseries.csv"
+            timeseries.to_csv(os.path.join(params['save']['timeseries'], filename), index=False)
 
-
+    # create the listfile containing all stays
+    create_listfile(params['load']['timeseries'], stays[stays_retained])
+    
+    # store info about retained stays
+    stays_overview = stays[['pat_deid', 'stay_id']]
+    stays_overview = stays_overview.assign(retained=stays_retained)
+    stays_overview.to_csv(os.path.join(params['load']['timeseries'], 'retained_stays.csv'), index=False)
+    
+    

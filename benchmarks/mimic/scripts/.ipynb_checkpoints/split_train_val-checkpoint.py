@@ -1,3 +1,9 @@
+# +-------------------------------------------------------------------------------------------------+
+# | split_train_val.py: split train data further into train and val                                 |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
+
 import shutil
 import argparse
 import os

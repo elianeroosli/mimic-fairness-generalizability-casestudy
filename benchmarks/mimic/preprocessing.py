@@ -1,3 +1,9 @@
+# +-------------------------------------------------------------------------------------------------+
+# | preprocessing.py: processing and cleaning of static and timeseries variables                    |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
+
 import numpy as np
 import re
 
@@ -10,74 +16,6 @@ from benchmarks.mimic.util import *
 # all "static" variables such as demographic variables, overall stay info and diagnoses
 #######################################################################################
 
-# return the key for a given value in the map associated with a given demographic variable
-def find_map_key(dem, val_search):
-    if (dem == 'Gender') or (dem == 'gender'):
-        return get_key(g_map, val_search)
-    if (dem == 'Ethnicity') or (dem == 'ethnicity'):
-        return get_key(e_map, val_search)
-    if (dem == 'Insurance') or (dem == 'insurance'):
-        return get_key(i_map, val_search)
-    if (dem == 'binaryIns'):
-        return get_key(ispublic_map, val_search)
-
-# get the key given a dictionary and a value
-def get_key(dictionary, val_search):
-    for key, val in dictionary.items():  
-        if val == val_search:
-            return key
-
-# gender map
-g_map = {'F': 1, 'M': 2, 'OTHER': 3, '': 0}
-
-
-def transform_gender(gender_series):
-    global g_map    # to access the variable defined outside of the function
-    return { 'Gender': gender_series.fillna('').apply(lambda s: g_map[s] if s in g_map else g_map['OTHER']) }
-
-# ethnicity map: there are many more subtypes but they all contain one of these keywords at first position
-e_map = {'ASIAN': 1,
-         'BLACK': 2,
-         'CARIBBEAN ISLAND': 2,
-         'HISPANIC': 3,
-         'SOUTH AMERICAN': 3,
-         'WHITE': 4,
-         'MIDDLE EASTERN': 4,
-         'PORTUGUESE': 4,
-         'OTHER': 0,
-         'AMERICAN INDIAN': 0,
-         'NATIVE HAWAIIAN': 0,
-         'UNABLE TO OBTAIN': 0,
-         'PATIENT DECLINED TO ANSWER': 0,
-         'UNKNOWN': 0,
-         '': 0}
-
-def transform_ethnicity(ethnicity_series):
-    global e_map
-
-    def aggregate_ethnicity(ethnicity_str):
-        # replace(old, new); split(separator) returns list of strings: only take first one
-        return ethnicity_str.replace(' OR ', '/').split(' - ')[0].split('/')[0]
-
-    ethnicity_series = ethnicity_series.apply(aggregate_ethnicity)
-    return {'Ethnicity': ethnicity_series.fillna('').apply(lambda s: e_map[s] if s in e_map else e_map['OTHER'])}
-
-ispublic_map = {'Public':1,
-         'Private': 0,
-         'Selfpay': 2,
-        }
-
-i_map = {'Government':1,
-         'Medicare': 2,
-         'Medicaid': 3,
-         'Private': 4,
-         'Self Pay': 5,
-         'Other': 0,
-         '': 0}
-
-def transform_insurance(insurance_series):
-    global i_map
-    return {'Insurance': insurance_series.fillna('').apply(lambda s: i_map[s] if s in i_map else i_map['Other']) }
 
 # collect data
 def assemble_episodic_data(stays, diagnoses):

@@ -1,3 +1,9 @@
+# +-------------------------------------------------------------------------------------------------+
+# | validate_events.py: process stays and events data                                               |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
+
 import os
 import argparse
 import pandas as pd

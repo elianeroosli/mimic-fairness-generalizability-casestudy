@@ -1,11 +1,13 @@
 -- 1) MAKE SURE DATE FORMAT IS CORRECT
 ALTER SESSION SET nls_date_format = 'YYYY-MM-DD HH24:MI:SS';
 
+
 -- 2) DROP TABLE IF IT EXISTS
-DROP TABLE ER_ICU_STAYS;
+DROP TABLE ER_ICU_STAYS_TEMP;
+
 
 -- 3) CREATE ICU STAYS TABLE
-CREATE TABLE ER_ICU_STAYS AS
+CREATE TABLE ER_ICU_STAYS_TEMP AS
     -- make sure there was only 1 ICU stay for a given hospital admission (no transfers, no ICU readmissions) 
     WITH aux_ AS (
         SELECT COUNT(*), pat.pat_deid, icu.hosp_admsn_time
@@ -72,7 +74,14 @@ CREATE TABLE ER_ICU_STAYS AS
         -- test both hosp_dischrg and icu_out in case one is missing
             WHEN pat.death_date IS NOT NULL AND (pat.death_date <= icu.hosp_dischrg_time OR pat.death_date <= icu.icu_out_datetime)  THEN 1
             ELSE 0
-        END AS ihm
+        END AS ihm,
+        get_shc_charlson_score(CAST(pat.PAT_DEID AS NUMBER), 
+                           CAST(icu.icu_in_datetime - 365 AS DATE), 
+                           CAST(icu.icu_in_datetime + 2 AS DATE)) AS comorbidity1,
+        get_shc_charlson_score(CAST(pat.PAT_DEID AS NUMBER), 
+                           CAST(icu.icu_in_datetime - 730 AS DATE), 
+                           CAST(icu.icu_in_datetime + 2 AS DATE)) AS comorbidity2
+
         
     FROM pat_map_new_de pat, shc_icu_in_out icu, aux_ ax
     -- make sure patients and icu stays match
@@ -91,13 +100,13 @@ CREATE TABLE ER_ICU_STAYS AS
     -- exclude icu stays shorter than 48h
     AND TRUNC((icu.icu_out_datetime - icu.icu_in_datetime)*24) >= 48;        
 
-
+                                
 -- 4) DROP TABLE IF IT EXISTS
-DROP TABLE ER_ICU_STAYS_HW;
+DROP TABLE ER_ICU_STAYS;
 
-
+                                
 -- 5) ADD HEIGHT AND WEIGHT TO STAYS TABLE
-CREATE TABLE ER_ICU_STAYS_HW AS 
+CREATE TABLE ER_ICU_STAYS AS 
     
     WITH weight AS (
         SELECT enc.pat_deid, enc.stay_id, enc.weight, ROUND((enc.icu_in - enc.appt_when),2) AS diff     
@@ -127,7 +136,7 @@ CREATE TABLE ER_ICU_STAYS_HW AS
     
     SELECT icu.*, wt.weight, ht.height
     
-    FROM er_icu_stays icu 
+    FROM er_icu_stays_temp icu 
     LEFT OUTER JOIN weight wt ON (wt.pat_deid = icu.pat_deid AND wt.stay_id = icu.stay_id)
     LEFT OUTER JOIN height ht ON (ht.pat_deid = icu.pat_deid AND ht.stay_id = icu.stay_id);
     

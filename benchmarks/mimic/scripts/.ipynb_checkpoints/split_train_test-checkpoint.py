@@ -1,3 +1,9 @@
+# +-------------------------------------------------------------------------------------------------+
+# | split_train_test.py: split data and move to respective folders                                  |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
+
 import os
 import shutil
 import argparse

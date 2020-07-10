@@ -1,6 +1,8 @@
-# Copyright (c) 2018 Stanford, Jean Coquet, Selen Bozkurt
-#
-# modified by Eliane Röösli, 2020
+# +-------------------------------------------------------------------------------------------------+
+# | fetch_data.py: build and load tables from Oracle into Nero                                      |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Jean Coquet & Selen Bozkurt (2018 Stanford)                  |
+# +-------------------------------------------------------------------------------------------------+
 
 import json
 import argparse
@@ -14,12 +16,12 @@ def loadStaysFromSQL(params, connection):
     stays_file = open(params["save"]["stays"], "w")
     
     # header
-    header = ['pat_deid', 'stay_id', 'age', 'gender', 'race', 'insurance', 'hosp_in', 'hosp_out', 'icu_in', 'icu_out',  'ihm', 'weight', 'height']
+    header = ['pat_deid', 'stay_id', 'age', 'gender', 'race', 'insurance', 'hosp_in', 'hosp_out', 'icu_in', 'icu_out',  'ihm', 'comorb1', 'comorb2', 'weight', 'height']
     stays_file.write('\t'.join(header) + '\n')
     
     # stays
-    for pat_deid, stay_id, age, gender, race, insurance, hosp_in, hosp_out, icu_in, icu_out, ihm, weight, height in executeSQL(params['load_sql']['stays_hw'], connection):
-        stays_file.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (pat_deid, stay_id, age, gender, race, insurance, hosp_in, hosp_out, icu_in, icu_out, ihm, weight, height))
+    for pat_deid, stay_id, age, gender, race, insurance, hosp_in, hosp_out, icu_in, icu_out, ihm, comorbidity1, comorbidity2, weight, height in executeSQL(params['load_sql']['stays'], connection):
+        stays_file.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (pat_deid, stay_id, age, gender, race, insurance, hosp_in, hosp_out, icu_in, icu_out, ihm, comorbidity1, comorbidity2, weight, height))
     
     stays_file.close()
 
