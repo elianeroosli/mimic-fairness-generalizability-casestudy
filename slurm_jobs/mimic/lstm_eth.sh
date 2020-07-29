@@ -10,5 +10,5 @@
 cd /share/pi/boussard/eroosli_work/benchmarking
 
 echo TRAINING THE CHANNEL-WISE LSTM with additional data on ethnicity 
-python -um mimic3models.in_hospital_mortality.main --network mimic3models/keras_models/channel_wise_lstms.py --data data/aug/mortality --mask_demographics "Gender" "Insurance" --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 100
+python -um models.ihm.main --network models/keras_models/channel_wise_lstms.py --data data/mimic/aug/mortality --mask_demographics "Gender" "Insurance" --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 100
 
