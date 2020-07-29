@@ -4,9 +4,8 @@
 
 **1. Get access to data**
 
-STARR2019_DE is a private database with from Stanford Health Care and not accessible
-to researchers outside of Stanford. Tina Seto manages the database access for
-researchers associated with the Stanford School of Medicine.
+STARR2019_DE is a private database with from Stanford Health Care and generally not accessible
+to researchers outside of Stanford. 
 
 ***Note:*** The data has been pulled into STARR2019_DE from different locations, namely via a views 
 on SHC_ICU_FLOWSHEET_DE (vitals), from the STRIDE_DATALAKE SHC_FLOWSHEET on BigQuery (vitals) and
