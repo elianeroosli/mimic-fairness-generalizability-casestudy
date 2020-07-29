@@ -23,6 +23,7 @@ Clone this repo to your desired location.
 To access the Oracle database from Nero, one has to update the username information
 in the `sql/params.json` file to create a successful connection.
 
+
 **4. Fetch data**
 
 The file `fetch_data.py` builds the STAYS, LABS and VITALS table from the SQL queries
@@ -62,10 +63,11 @@ Importantly, there are two options one can choose:
 - `-b`: triggers the script to first build the tables from scratch again
 - `-l`: suppresses the loading of the tables (in case one only wants to rebuild the tables)
 
+
 **5. Create timeseries**
 
 Then, one single script loads the data, cleans it and creates individual timeseries
-stored as `.csv` files for each stay. It is invoked the following way: 
+stored as `.csv` files for each stay. It is invoked the following way in a Jupyter notebook environment: 
 
         %run benchmarks/starr/scripts/create_timeseries.py -p "benchmarks/starr/sql/params.json" -v
 
