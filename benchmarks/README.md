@@ -7,5 +7,6 @@ to also make use demographic feature variables. For the new STARR cohort, the sa
 after the variables have been located in the different tables of the STARR2019_DE database. Analysis
 tools have been also added to inspect the data missingness and cohort demographics.
 
-
+<div align="center">
 <img src="mimic/resources/benchmark_cohort.JPG"  width="500" height="500">
+</div>
