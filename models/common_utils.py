@@ -62,6 +62,32 @@ def read_chunk(reader, chunk_size):
     return data, demographics
 
 
+def get_ratios(df, variable):
+    for group in df[variable].unique():
+        df_group = df[df[variable]==group]
+        y = df_group['IHM']
+        print(y.sum(), y.sum()/(len(y)-y.sum()))
+
+
+def equalizer(df, variable):
+    ros = RandomOverSampler(sampling_strategy=0.22)
+
+    frames = []
+    for group in df[variable].unique():
+        df_group = df[df[variable]==group]
+        X = df_group[['CSV', 'ETHNICITY', 'IHM']]
+        y = df_group['IHM']
+        X_res, y_res = ros.fit_resample(X, y)
+        print(y_res.sum(), y_res.sum()/(len(y_res)-y_res.sum()))
+        frames.append(X_res)
+
+    result = pd.concat(frames)
+    result.rename(columns={'CSV': 'stay', 'IHM': 'y_true'}, inplace=True)
+    result['y_true'] = result['y_true'].apply(lambda d: int(d))
+    result[['stay', 'y_true']].to_csv(os.path.join('data/mimic/aug/mortality', variable + '_test_listfile.csv'), index=False)
+
+
+    
 def sort_and_shuffle(data, batch_size):
     """ Sort data by the length and then make batches and shuffle them.
         data is tuple (X1, X2, ..., Xn) all of them have the same length.

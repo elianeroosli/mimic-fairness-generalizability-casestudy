@@ -301,7 +301,7 @@ def plot_calibration_mean_strat(output_json, data='mimic'):
     
 def plot_calibration_diffs(output_json, data='mimic'):
     fig, axs = plt.subplots(4, 1, figsize=(9,4), sharex=True, gridspec_kw={'height_ratios': [1,3,2,4], 'hspace': 0})
-    plt.xlabel("Predicted minus observed average risk", fontsize=16, labelpad=10)
+    plt.xlabel("Calibration-in-the-large", fontsize=16, labelpad=10)
     axs[1].margins(y=0.4)
     axs[2].margins(y=0.6)
     axs[3].margins(y=0.3)
