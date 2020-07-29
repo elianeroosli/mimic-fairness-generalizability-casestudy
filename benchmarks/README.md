@@ -8,4 +8,4 @@ after the variables have been located in the different tables of the STARR2019_D
 tools have been also added to inspect the data missingness and cohort demographics.
 
 
-![](mimic/resources/benchmark_cohort.JPG)
+<img src="mimic/resources/benchmark_cohort.JPG"  width="500" height="500">
