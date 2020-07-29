@@ -2,7 +2,7 @@
     "database": {
 		"username": "XXXX",
 		"hostname": "XXXX",
-		"port":  XXXX,
+		"port": "XXXX",
 		"servicename": "XXXX",
         "tnsname": "XXXX"
 	},
