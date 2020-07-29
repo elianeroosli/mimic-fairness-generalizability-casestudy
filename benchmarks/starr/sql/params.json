@@ -1,6 +1,6 @@
 {
     "database": {
-		"username": "eroosli[starr2019_de]",
+		"username": "SUNETID[starr2019_de]",
 		"hostname": "rit-datamart-db-p01",
 		"port":  1521,
 		"servicename": "datamartpdb.stanford.edu",
