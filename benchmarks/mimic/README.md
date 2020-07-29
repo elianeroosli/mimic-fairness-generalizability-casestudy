@@ -2,6 +2,9 @@
 
 ## Step-by-step instruction
 
+***Note:*** SLURM Scripts in the `slurm_jobs/mimic` folder exist that cover step 3 through step 6. 
+
+
 **1. Get data**
 
 Access to MIMIC-III must be requested through an accreditation process on
@@ -77,7 +80,7 @@ and validation sets as following:
     
 ## Resulting database
 
-After following all steps, there will be a directory `data/{task}` for each created benchmark task.
+After following all steps, there will be a directory `data/{task}` for each created benchmark task, i.e. mortality in our case.
 These directories have two sub-directories: `train` and `test`.
 Each of them contains csv files containing events data from ICU stays and one file named `listfile.csv`, 
 which lists all samples in that particular set: `icu_stay, period_length, label(s)`. It hence summarizes
