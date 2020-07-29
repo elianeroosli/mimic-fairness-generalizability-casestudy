@@ -11,10 +11,10 @@ Five different baseline models for each of the four main tasks have been provide
 - Channel-wise LSTM + deep supervision
 
 In addition, they have also developped multitasking models that aim to learn all four
-prediction tasks simultaneously. For the frame of this project however, we focus
+prediction tasks simultaneously. For the scope of this project however, we focus
 on the modeling of in-hospital mortality. The best-performing
 model for this task was reported to be the `simple channel-wise LSTM`. Hence, we focus
-on analysing this specific model on bias, demographic fairness and generalizability.
+on analyzing this specific model on bias, demographic fairness and generalizability.
 
 ## Step-by-step instructions: Training
 
@@ -33,7 +33,7 @@ containing keras has to be activated:
         
 **2. Go to slurm_job directory**
 
-        cd /share/pi/boussard/eroosli_work/benchmarking/slurm_jobs
+        cd /share/pi/boussard/eroosli_work/benchmarking/slurm_jobs/{mimic/starr}
         
 
 **3. Select corresponding shell script file**
@@ -51,7 +51,7 @@ Go over all code chunks in the .sh file to make sure they fit with your needs an
 - model: models/keras_models/channel_wise_lstms.py
 - data: data/aug/mortality 
 - demographics: --mask_demographics "Ethnicity" "Gender" "Insurance" (a selection of these three)
-- additional parameters: --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 50
+- additional parameters: --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 100
 
 **5. Submit job to SLURM**
 
@@ -91,7 +91,7 @@ In a Jupyter notebook, the following script is then run:
 It takes a number of parameters to specify the testing procedure:
 
         --network models/keras_models/channel_wise_lstms.py
-        --mask_demographics "Ethnicity" "Gender" "Insurance" 
+        --mask_demographics "Ethnicity" "Gender" "Insurance" (matching the training selection)
         --data data/aug/mortality 
         --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --size_coef 4.0
         --load_state models/ihm/keras_states/{date}/k_clstms.{demographics}.epoch{epoch}.state 
@@ -99,7 +99,7 @@ It takes a number of parameters to specify the testing procedure:
         
 **3. Analyse results**
 
-The script has produced several outputs ready for analysis in the `predictions` folder:
+The script produces several outputs ready for analysis in the `predictions` folder:
 
 - **curves**: .csv files to create ROC and PRC plots, per demographic group and overall
 - **metrics**: .csv file with all relevant performance metrics, per demographic group and overall
@@ -111,7 +111,7 @@ The script has produced several outputs ready for analysis in the `predictions` 
 The evaluation script takes as input the test predictions stored in `results/filename.csv` and computes 
 confidence intervals of the relevant performance metrics by bootstrapping. The intervals
 are individually computed for all demographic groups and the whole test data. In a Jupyter
-notebook, write:
+notebook, write and execute:
 
         %run models/evaluation/evaluate_ihm.py 
 
