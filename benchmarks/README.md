@@ -6,4 +6,4 @@ with the pre-existing code. For the new STARR cohort, the same criteria have bee
 after the variables have been located in the different tables of the STARR2019_DE database.
 
 
-![](benchmark_cohort.JPG)
+![](mimic/resources/benchmark_cohort.JPG)
