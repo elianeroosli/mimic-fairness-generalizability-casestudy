@@ -33,7 +33,7 @@ containing keras has to be activated:
         
 **2. Go to slurm_job directory**
 
-        cd /share/pi/boussard/eroosli_work/benchmarking/slurm_jobs/{mimic/starr}
+        cd /share/pi/boussard/eroosli_work/benchmarking/slurm_jobs/{mimic, starr}
         
 
 **3. Select corresponding shell script file**
@@ -49,9 +49,11 @@ Go over all code chunks in the .sh file to make sure they fit with your needs an
 
 - main script file: models.ihm.main
 - model: models/keras_models/channel_wise_lstms.py
-- data: data/aug/mortality 
+- data: data/{mimic/aug, starr}/mortality 
+- data_name : {"starr", "mimic"}
+- output_dir : models/outputs/{starr, mimic}
 - demographics: --mask_demographics "Ethnicity" "Gender" "Insurance" (a selection of these three)
-- additional parameters: --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 100
+- additional parameters: --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 100 {--SMOTE}
 
 **5. Submit job to SLURM**
 
@@ -75,7 +77,7 @@ and is uniquely identified by its job ID.
 The first step is to find the best model epoch based on the validation AUROC score. The above training procedure 
 has stored a .csv file in the `keras_logs` directory which can be fed into the following function:
 
-        models.common_utils.optimal_epoch('{date}.k_clstms.{demographics}.csv', {'mimic'/'starr'})
+        models.common_utils.optimal_epoch('{date}.k_clstms.{demographics}.csv', {'mimic', 'starr'})
     
 The file contains all the relevant performance metrics on both train and validation data for each training epoch.
 The function returns the epoch associated with the highest `val_auroc`. The model associated
@@ -92,7 +94,8 @@ It takes a number of parameters to specify the testing procedure:
 
         --network models/keras_models/channel_wise_lstms.py
         --mask_demographics "Ethnicity" "Gender" "Insurance" (matching the training selection)
-        --data data/aug/mortality 
+        --data data/{mimic/aug, starr}/mortality 
+        --output_dir models/outputs/{starr, mimic}
         --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --size_coef 4.0
         --load_state models/ihm/keras_states/{date}/k_clstms.{demographics}.epoch{epoch}.state 
         --mode test 
@@ -117,7 +120,7 @@ notebook, write and execute:
 
 A number of parameters to specify the evaluation procedure need to be added on the same line:
 
-        - listfile of test data: --test_listfile "data/aug/mortality/test/listfile.csv" 
+        - listfile of test data: --test_listfile "data/{mimic/aug, starr}/mortality/test/listfile.csv" 
         - number bootstrapping iterations: --n_iters 10000 
         - whether bootstrapping should be stratified by the outcome label: --stratify 
         - test predictions: "models/ihm/predictions/results/TEST.{date}.k_clstms.{demographics}.csv"
