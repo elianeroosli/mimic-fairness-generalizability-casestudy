@@ -1,10 +1,10 @@
 {
     "database": {
-		"username": "SUNETID[starr2019_de]",
-		"hostname": "rit-datamart-db-p01",
-		"port":  1521,
-		"servicename": "datamartpdb.stanford.edu",
-        "tnsname": "boussard_prostate_db"
+		"username": "XXXX",
+		"hostname": "XXXX",
+		"port":  XXXX,
+		"servicename": "XXXX",
+        "tnsname": "XXXX"
 	},
 	"sql": {
 		"stays": "sql/extract_stays.sql",
