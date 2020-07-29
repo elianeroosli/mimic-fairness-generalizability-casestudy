@@ -2,9 +2,11 @@
 
 This case study examines the fairness and generalizability of a MIMIC-trained model published in the peer-reviewed article on 
 [Multitask learning and benchmarking with clinical time series data](https://www.nature.com/articles/s41597-019-0103-9) by Harutyunyan et al., 
-with the code available [here](https://github.com/YerevaNN/mimic3-benchmarks).
+with the source code available [here](https://github.com/YerevaNN/mimic3-benchmarks).
 
-The source code made available by Harutyunyan et al. has been updated and adapted to this analysis framework.
+The source code to create an in-hospital mortality benchmark cohort and train a channel-wise LSTM model on it
+has been updated, extended to a new data source (i.e. STARR) and augmented by a comprehensive analysis framework
+to examine generalizability and fairness of the risk prediction model.
 All code necessary to reconstruct the same analyses, including the Jupyter notebooks, can be
 found in this repository.
 
@@ -18,7 +20,7 @@ This repository contains four main directories:
 - `notebooks`: Relevant Jupyter notebooks 
 - `slurm_jobs`: SLURM scripts for training the models
 
-Detailed usage instructions for for how to create benchmark cohorts, use the model
+Detailed usage instructions for how to create benchmark cohorts, use the model
 architectures and analyze the output can be found in the README's of the 
 corresponding folders and subfolders.
 
