@@ -4,7 +4,6 @@
 # | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
 # +-------------------------------------------------------------------------------------------------+
 
-
 import sklearn.utils as sk_utils
 import numpy as np
 import pandas as pd
@@ -16,8 +15,6 @@ from benchmarks.common_tools import find_map_key
 from models.evaluation.metrics import print_metrics_binary
 from models.ihm import utils
 from models.evaluation.configs import is_public_map
-
-
 
 def main():
     parser = argparse.ArgumentParser()
