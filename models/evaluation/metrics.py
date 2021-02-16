@@ -10,8 +10,6 @@ from sklearn import metrics
 from benchmarks.common_tools import find_map_key
 
 
-#### decompensation, in-hospital mortality #### 
-
 def print_metrics_binary(y_true, predictions, dem_variable=None, dem_value=None, verbose=1):
     predictions = np.array(predictions)
     
