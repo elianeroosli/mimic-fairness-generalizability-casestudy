@@ -20,53 +20,20 @@ on analyzing this specific model on bias, demographic fairness and generalizabil
 
 The code for the LSTM-based models can be found in the `keras_models` directory and
 the ``main.py`` file to train the models is situated in the `ihm` directory.
-As these models take relatively long to train, it is advised to submit a job file to SLURM on NERO.
-These can be found in the `slurm_jobs` directory. The following steps have to be followed to successfully
-submit a job:
 
-**1. Activate environment**
+In a Jupyter notebook, the following script is run:
 
-The models make use of keras, which is not part of the base environment. Therefore, another environment
-containing keras has to be activated:
+        %run models/ihm/main.py
 
-        source activate /share/pi/boussard/envs/eroosli_env
-        
-**2. Go to slurm_job directory**
 
-        cd /share/pi/boussard/eroosli_work/benchmarking/slurm_jobs/{mimic, starr}
-        
+It takes a number of parameters to specify the training procedure:
 
-**3. Select corresponding shell script file**
-
-There are several options for the channel-wise LSTM model to predict in-hospital mortality:
-Use the basic benchmark dataset or augmenting it with a selection of demographic variables
-choosing from *gender, ethnicity and insurance* data. The corresponding .sh files
-are named `lstm_{variables}.py`.
-    
-**4. Update and validate shell script file**
-
-Go over all code chunks in the .sh file to make sure they fit with your needs and file organization:
-
-- main script file: models.ihm.main
-- model: models/keras_models/channel_wise_lstms.py
-- data: data/{mimic/aug, starr}/mortality 
-- data_name : {"starr", "mimic"}
-- output_dir : models/outputs/{starr, mimic}
-- demographics: --mask_demographics "Ethnicity" "Gender" "Insurance" (a selection of these three)
-- additional parameters: --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --mode train --size_coef 4.0 --epochs 100 {--SMOTE}
-
-**5. Submit job to SLURM**
-
-        sbatch filename.sh
-        
-**6. Check status of job**
-
-        squeue -u SUNETID
-        
-**7. Analyse output**
-
-The output file corresponding to the submitted job can be found in the `slurm_jobs/outputs` directory
-and is uniquely identified by its job ID.
+        --network models/keras_models/channel_wise_lstms.py
+        --data data/{mimic/aug, starr}/mortality 
+        --mask_demographics "Ethnicity" "Gender" "Insurance" (a selection of these three)
+        --output_dir models/outputs/{starr, mimic}
+        --dim 8 --depth 1 --batch_size 8 --dropout 0.3 --timestep 1.0 --size_coef 4.0 --epochs 100 {--SMOTE}
+        --mode train 
 
 
 ## Step-by-step instructions: Testing
