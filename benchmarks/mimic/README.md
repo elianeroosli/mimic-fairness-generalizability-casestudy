@@ -29,7 +29,6 @@ The first command places you in the directory. It then takes MIMIC-III csv files
 Note that there is a flag that allows to specify whether additional demographic
 variables should be included in the ICU stay information.
 
-       cd mimic3-benchmarks/
        python -m benchmarks.scripts.extract_subjects path_mimic data {--add_demographics}
 
 **4. Clean events data** 
