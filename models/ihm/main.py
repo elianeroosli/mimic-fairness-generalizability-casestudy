@@ -88,7 +88,6 @@ model = model_module.Network(**args_dict)
 #print("channel names:", model.channel_names)
 #print([discretizer._is_categorical_channel[channel] for channel in model.channel_names])
 
-
 # model name
 date = utils.give_date() 
 model.final_name = ".".join([date, model.say_name()]) 
@@ -121,7 +120,6 @@ if args.load_state != "":
     print(args.load_state)
     model.load_weights(args.load_state)
     n_trained_chunks = int(re.match(".*epoch([0-9]+).*", args.load_state).group(1))
-
 
     
 #------------------------------- for TRAINING the model -------------------------------------------------------------
@@ -215,7 +213,6 @@ if args.mode == 'train':
     # - metrics_callback: print the epoch results for train and validation set
     # - csv_logger: streams epoch results to a csv file
     # - saver: comes from modelcheckpoint
-    
     
     
 #-------------------------------------- for testing the model ---------------------------------------------
