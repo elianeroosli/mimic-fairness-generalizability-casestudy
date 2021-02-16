@@ -107,7 +107,7 @@ if args.test:
         print('7. IN TEST MODE: USING ONLY {0} STAYS AND ONLY {1} TABLE'.format(stays.shape[0], args.event_tables[0]))
 
 
-### 8. final data prep (TAKES THE MOST TIME)
+### 8. final data prep 
 
 if args.verbose:
     print('8. PREPARE SUBDIRECTORIES AND INDIVIDUAL DATA FILES')
