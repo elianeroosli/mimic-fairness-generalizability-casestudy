@@ -7,8 +7,7 @@ with the source code available [here](https://github.com/YerevaNN/mimic3-benchma
 The source code to create an in-hospital mortality benchmark cohort and train a channel-wise LSTM model on it
 has been updated, extended to a new data source (i.e. STARR) and augmented by a comprehensive analysis framework
 to examine generalizability and fairness of the risk prediction model.
-All code necessary to reconstruct the same analyses, including the Jupyter notebooks, can be
-found in this repository.
+All code necessary to reconstruct the same analyses can be found in this repository.
 
 This repository contains two main directories:
 
