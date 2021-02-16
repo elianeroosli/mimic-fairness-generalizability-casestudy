@@ -26,42 +26,6 @@ def results_csv(path):
 
 #--------------------------------------------- STATS -----------------------------------------
 
-def hl_test(data, g, verbose=True):
-    '''
-    Hosmer-Lemeshow test to judge the goodness of fit for binary data
-
-    Input: 
-    - data: predictions and true outcomes 
-    - g: number of bins/groups
-    
-    Output: 
-    - hltest: value of test statistic
-    - pval: p-value associated with hltest
-    '''
-    
-    data_st = data.sort_values('prediction')
-    data_st['dcl'] = pd.qcut(data_st['prediction'], g)
-    
-    # ys: number of expected positive cases, yn: expected negative cases, yt: total number of cases
-    ys = data_st['y_true'].groupby(data_st.dcl).sum()
-    yt = data_st['y_true'].groupby(data_st.dcl).count()
-    yn = yt - ys
-    
-    # yps: number of predicted positive cases, ypn: predicted negative cases
-    yps = data_st['prediction'].groupby(data_st.dcl).apply(lambda x: x.mean()*x.shape[0]) 
-    ypn = data_st['prediction'].groupby(data_st.dcl).apply(lambda x: (1-x.mean())*x.shape[0])
-    
-    # test statistic
-    hltest = ( ((ys - yps)**2 / yps) + ((yn - ypn)**2 / ypn) ).sum()
-    df = g-2
-    pval = 1 - chi2.cdf(hltest, df)
-    
-    if verbose:
-        print('HL-chi2({}): {}, p-value: {}'.format(df, hltest, pval))
-    
-    return hltest, pval
-
-
 
 # BINNING: group samples into risk groups based on the prediction and compute mean predicted and observed mortality risk per group
 def risk_groups(df, g, option='quantiles'):
