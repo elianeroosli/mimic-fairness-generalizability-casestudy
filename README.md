@@ -2,7 +2,7 @@
 
 This case study examines the fairness and generalizability of a MIMIC-trained model published in the peer-reviewed article on 
 [Multitask learning and benchmarking with clinical time series data](https://www.nature.com/articles/s41597-019-0103-9) by Harutyunyan et al., 
-with the source code available [here](https://github.com/YerevaNN/mimic3-benchmarks).
+with the source code available [here](https://github.com/YerevaNN/mimic3-benchmarks). The case study is based on the following fairness and generalizability assessment framework:
 
 <div align="center">
 <img src="benchmarks/mimic/resources/fairness_generalizability_assessment_framework.JPG"  width="500" height="500">
