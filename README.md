@@ -4,6 +4,10 @@ This case study examines the fairness and generalizability of a MIMIC-trained mo
 [Multitask learning and benchmarking with clinical time series data](https://www.nature.com/articles/s41597-019-0103-9) by Harutyunyan et al., 
 with the source code available [here](https://github.com/YerevaNN/mimic3-benchmarks).
 
+<div align="center">
+<img src="benchmarks/mimic/resources/fairness_generalizability_assessment_framework.JPG"  width="500" height="500">
+</div>
+
 The source code to create an in-hospital mortality benchmark cohort and train a channel-wise LSTM model on it
 has been updated, extended to a new data source (i.e. STARR) and augmented by a comprehensive analysis framework
 to examine generalizability and fairness of the risk prediction model.
