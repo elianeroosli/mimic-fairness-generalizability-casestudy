@@ -21,7 +21,6 @@ def metrics_csv(path):
     return df
 
 
-
 #------------------------------------------------ STATS --------------------------------------
 
 # collect all data from either training or validation    
@@ -57,10 +56,7 @@ def plot_metrics_basic(df, var):
     
 
 #---------------------------------------- PLOTS: advanced performance metrics (with conf ints) --------------------------------------
-    
-    
-
-
+   
 
 def plot_metric_grouped(output_json, variable, data='mimic'):
     fig, axs = plt.subplots(4, 1, figsize=(9,4), sharex=True, gridspec_kw={'height_ratios': [1,3,2,4], 'hspace': 0})
