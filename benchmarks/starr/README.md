@@ -4,8 +4,7 @@
 
 **1. Get access to data**
 
-STARR2019_DE is a private database with from Stanford Health Care and generally not accessible
-to researchers outside of Stanford. 
+STARR2019_DE is a private database with from Stanford Health Care with fully identifiable patient data and can therefore not be shared with the public. 
 
 ***Note:*** The data has been pulled into STARR2019_DE from different locations, namely via a views 
 on SHC_ICU_FLOWSHEET_DE (vitals), from the STRIDE_DATALAKE SHC_FLOWSHEET on BigQuery (vitals) and
