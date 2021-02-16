@@ -1,3 +1,9 @@
+# +-------------------------------------------------------------------------------------------------+
+# | feature_extractor.py: diverse helper functions                                                       |
+# |                                                                                                 |
+# | Eliane Röösli (2020), adapted from Harutyunyan et al (2019)                                     |
+# +-------------------------------------------------------------------------------------------------+
+
 import numpy as np
 from scipy.stats import skew
 
