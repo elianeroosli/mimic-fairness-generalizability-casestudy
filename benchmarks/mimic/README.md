@@ -2,8 +2,6 @@
 
 ## Step-by-step instruction
 
-***Note:*** SLURM Scripts in the `slurm_jobs/mimic` folder exist that cover step 3 through step 6. 
-
 
 **1. Get data**
 
