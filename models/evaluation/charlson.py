@@ -67,7 +67,6 @@ def charlson_grouped_all(listfiles):
     fig.savefig(path)
     
     
-    
 
 # ---------------------------- PLOT GROUPED BY DEMOGRAPHIC VARIABLE -------------------------------   
 
@@ -116,8 +115,6 @@ def charlson_grouped(listfiles, dem_var, nbplots=3):
     
     
     
-    
-
 # ---------------------------- INDIVIDUAL PLOTS ------------------------------- 
 
 def plot_smoothed(listfile, dem_var):
