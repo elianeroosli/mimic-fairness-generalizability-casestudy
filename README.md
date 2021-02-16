@@ -10,15 +10,13 @@ to examine generalizability and fairness of the risk prediction model.
 All code necessary to reconstruct the same analyses, including the Jupyter notebooks, can be
 found in this repository.
 
-This repository contains four main directories:
+This repository contains two main directories:
 
 - `benchmarks`: Pipeline to construct in-hospital mortality (IHM) cohorts
     - *mimic*: Using MIMIC-III v1.4 relational database
     - *starr*: Using STARR_DE relational database
     - Shared scripts
 - `models`: Training, testing and evaluation protocols
-- `notebooks`: Relevant Jupyter notebooks 
-- `slurm_jobs`: SLURM scripts for training the models
 
 Detailed usage instructions for how to create benchmark cohorts, use the model
 architectures and analyze the output can be found in the README's of the 
