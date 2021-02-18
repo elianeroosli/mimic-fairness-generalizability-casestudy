@@ -7,7 +7,7 @@
 
 Access to MIMIC-III must be requested through an accreditation process on
 `https://mimic.physionet.org/`. Then, the csv files have to be downloaded and
-stored at path_mimic.
+stored at `path_mimic`.
    
 **2. Get code**
     
