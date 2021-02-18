@@ -1,17 +1,7 @@
 # Benchmark models
 
-Harutyunyan's paper looks at four clinical prediction tasks for ICU patients: 
-in-hospital mortality, decompensation, length-of-stay and phenotyping. 
-Five different baseline models for each of the four main tasks have been provided:
-
-- Linear/logistic regression
-- Standard LSTM
-- Standard LSTM + deep supervision
-- Channel-wise LSTM
-- Channel-wise LSTM + deep supervision
-
-In addition, they have also developped multitasking models that aim to learn all four
-prediction tasks simultaneously. For the scope of this project however, we focus
+Harutyunyan's paper looks at four clinical prediction tasks for ICU patients and they have
+developed an array of models for each task. For the scope of this project however, we only focus
 on the modeling of in-hospital mortality. The best-performing
 model for this task was reported to be the `simple channel-wise LSTM`. Hence, we focus
 on analyzing this specific model on bias, demographic fairness and generalizability.
@@ -24,7 +14,6 @@ the ``main.py`` file to train the models is situated in the `ihm` directory.
 In a Jupyter notebook, the following script is run:
 
         %run models/ihm/main.py
-
 
 It takes a number of parameters to specify the training procedure:
 
