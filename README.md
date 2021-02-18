@@ -1,4 +1,4 @@
-# Case Study: Fairness and Generalizability of MIMIC-Trained Model 
+# The Fairness and Generalizability Assessment Framework 
 
 This case study examines the fairness and generalizability of a MIMIC-trained model published in the peer-reviewed article on 
 [Multitask learning and benchmarking with clinical time series data](https://www.nature.com/articles/s41597-019-0103-9) by Harutyunyan et al., 
