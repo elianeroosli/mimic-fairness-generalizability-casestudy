@@ -201,7 +201,7 @@ if args.mode == 'train':
     print("==> training")
     model.fit(x=X,
               y=Y,
-              validation_data=(val_raw[0], val_raw[1], class_weights),
+              validation_data=(val_raw[0], val_raw[1], class_weight),
               epochs=n_trained_chunks + args.epochs,
               initial_epoch=n_trained_chunks,
               callbacks=[metrics_callback, saver, csv_logger],
